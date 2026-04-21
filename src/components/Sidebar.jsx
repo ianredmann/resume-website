@@ -66,6 +66,11 @@ function Sidebar() {
     return (
         <aside className="sidebar">
             <div className="sidebar-name">Ian Redman</div>
+            <div className="sidebar-bio">
+                <p className="tag">Full-Stack | Data Analyst</p>
+                <p className='tag'>Arkadelphia, Arkansas</p>
+
+            </div>
             <nav>
                 <ul>
                     {sections.map((section) => (
