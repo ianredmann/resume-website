@@ -23,6 +23,15 @@ function Experience() {
                         materials within a university library setting. Managed historical documents and 
                         records with attention to detail, ensuring accurate cataloging and accessibility. </li>
                 </ul>
+
+                <p className="role">Bioinformatics Hackathon Mentor</p>
+                <p className="date">April 2026</p>
+                <ul>
+                    <li>Guided a group of 10 high school students through hands-on sequencing and genome annotation tasks,
+                        adapting and explaining technical concepts for non-expert audiences, as well as collaborating with
+                        them to troubleshoot errors and ensure succesful completion.
+                    </li>
+                </ul>
             </div>
 
             <div className="card">
