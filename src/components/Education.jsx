@@ -14,8 +14,8 @@ function Education() {
                 <ul>
                     <li>GPA: 3.8</li>
                     <li>Member, Kappa Mu Epsilon (Mathematics Honors Society)</li>
-                    <li>President's List: Fall 2022, Spring 2024</li>
-                    <li>Dean's List: Fall 2023, Spring 2023, Fall 2024, Spring 2025</li>
+                    <li>President's List: Fall 2022, Spring 2024, Spring 2026</li>
+                    <li>Dean's List: Fall 2023, Spring 2023, Fall 2024, Spring 2025, Fall 2025</li>
                     <li>Academic Excellence Award - CS & Math Department, May 2024</li>
                 </ul>
 

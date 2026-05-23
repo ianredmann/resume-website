@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 function Sidebar() {
     const [activeSection, setActiveSection] = useState('about')
     const [darkMode, setDarkMode] = useState(false)
+    const [menuOpen, setMenuOpen] = useState(false)
 
     const sections = [
         { id: 'about', label: 'About' },
@@ -116,6 +117,7 @@ function Sidebar() {
         //     </div>
         // </aside>
             <aside className="sidebar">
+              <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
               <div className="sidebar-top">
                 <div className="sidebar-name">Ian Redman</div>
                 <div className="sidebar-bio">
@@ -124,7 +126,7 @@ function Sidebar() {
                 </div>
               </div>
           
-              <nav>
+              <nav className={menuOpen ? 'open' : ''}>
                 <ul>
                   {sections.map((section) => (
                     <li key={section.id}>
