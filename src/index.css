@@ -39,8 +39,10 @@ ul {
 }
 
 li {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 body.dark-mode {
