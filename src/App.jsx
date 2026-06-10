@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import Sidebar from './components/Sidebar'
 import About from './components/About'
 import Education from './components/Education'
@@ -10,7 +10,7 @@ import Skills from './components/Skills'
 import './App.css'
 
 function App(){
-  useLayoutEffect(() => {
+  useEffect(() => {
     const cards = document.querySelectorAll('.card')
 
     const observer = new IntersectionObserver(

@@ -40,7 +40,7 @@ const projects = [
 ]
 
 function Projects() {
-    const [flipped, setFlipped] = useState([false, false, false])
+    const [flipped, setFlipped] = useState(() => projects.map(() => false))
 
     const toggle = (i) =>
         setFlipped(f => f.map((v, idx) => (idx === i ? !v : v)))

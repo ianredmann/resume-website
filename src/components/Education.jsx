@@ -14,8 +14,8 @@ function Education() {
                     <h3>Ouachita Baptist University</h3>
                     <span className="location">Arkadelphia, AR</span>
                 </div>
-                <p className="degree">B.S Computer Science & B.S. Mathematics</p>
-                <p className="date">August 2022 – May 2026</p>
+                <p className="degree">B.S. Computer Science & B.S. Mathematics</p>
+                <p className="date">May 2026 · Graduated Magna Cum Laude</p>
 
                 <div className="honors-row">
                     {honors.map(({ value, label }) => (

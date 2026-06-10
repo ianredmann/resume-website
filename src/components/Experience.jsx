@@ -1,64 +1,118 @@
+import { useState } from 'react'
+import obuLogo from '../assets/Unknown-1.png'
+import ajLogo from '../assets/logo-v2.png'
+import compassLogo from '../assets/Compass_Group.svg.png'
+
+const experiences = [
+    {
+        role: 'Club Team Captain',
+        employer: 'AJ Fitness Swim Team',
+        location: 'Tegucigalpa, Honduras',
+        date: 'July 2021 – August 2022',
+        logo: ajLogo,
+        bullets: [
+            'Captained a 40-person team of swimmers aged 10–18, serving as the first point of contact for resolving conflicts and setting the standard for punctuality and effort during training.',
+            'Led pre-race speeches and team cheers to maintain morale and competitive focus during meets.',
+            'Served as captain during the team\'s rise from 4th to 2nd place at the national championship.',
+        ],
+    },
+    {
+        role: 'Resident Assistant',
+        employer: 'Ouachita Baptist University',
+        location: 'Arkadelphia, Arkansas',
+        date: 'August 2023 – May 2025',
+        logo: obuLogo,
+        bullets: [
+            'Supported 47 freshman residents through their first-year transition before moving to an upperclassmen building — adapting from a social integration focus to a community-standards and conflict-resolution role.',
+            'Coordinated Open Dorm periods, handled after-hours noise complaints, and maintained regular resident engagement logs for the Resident Life department.',
+            'Co-organized an annual haunted house event across the residential building, coordinating room setups with residents and managing live check-in and wait-time communication for 100+ participants.',
+        ],
+    },
+    {
+        role: 'Library Archivist',
+        employer: 'Ouachita Baptist University',
+        location: 'Arkadelphia, Arkansas',
+        date: 'May 2024 – August 2024',
+        logo: obuLogo,
+        bullets: [
+            'Organized and preserved physical documents, photographs, and miscellaneous archival materials under the direction of the head archivist.',
+            'Digitized selected materials for online publication, ensuring records were accurately cataloged and accessible in the university\'s digital archive.',
+        ],
+    },
+    {
+        role: 'Front of House Team Member',
+        employer: 'Compass Group',
+        location: 'Oxford, United Kingdom',
+        date: 'June 2025 – August 2025',
+        logo: compassLogo,
+        bullets: [
+            'Executed events of varying scale across multiple Oxford University college venues — from gatherings of around 100 to large formal events exceeding 400 guests — covering full setup, service, and breakdown.',
+            'Took on bar operations at select events, managing drink service alongside broader front-of-house responsibilities in a high-volume, time-sensitive environment.',
+        ],
+    },
+    {
+        role: 'Bioinformatics Hackathon Mentor',
+        employer: 'Ouachita Baptist University',
+        location: 'Arkadelphia, Arkansas',
+        date: 'April 2026',
+        logo: obuLogo,
+        bullets: [
+            'Guided 10 high school students through a full-day hands-on session in phage gene annotation, teaching the use of PECAAN, Glimmer, GeneMark, and associated functional databases.',
+            'Adapted graduate-level bioinformatics workflows for a non-expert audience; student annotations were submitted for potential inclusion in peer-reviewed research following faculty review.',
+        ],
+    },
+]
+
 function Experience() {
+    const [openIndex, setOpenIndex] = useState(null)
+
+    const toggle = (i) => setOpenIndex(prev => prev === i ? null : i)
+
     return (
         <section id="experience">
             <h2>Experience</h2>
-
-            <div className="card">
-                <div className="card-header">
-                    <h3>Ouachita Baptist University</h3>
-                    <span className="location"> Arkadelphia, Arkansas</span>
-                </div>
-                <p className="role">Resident Assistant</p>
-                <p className="date">August 2023 - May 2025</p>
-                <ul>
-                    <li>Oversaw a diverse communit of 47 freshmen and 40 upperclassmen
-                        students, providing guidance, support, and a safe living environment
-                        within the residential hall.</li>
-                </ul>
-
-                <p className="role">Library Archivist</p>
-                <p className="date">May 2024 - August 2024</p>
-                <ul>
-                    <li>Assisted in the organization, preservation, and digitization of archival 
-                        materials within a university library setting. Managed historical documents and 
-                        records with attention to detail, ensuring accurate cataloging and accessibility. </li>
-                </ul>
-
-                <p className="role">Bioinformatics Hackathon Mentor</p>
-                <p className="date">April 2026</p>
-                <ul>
-                    <li>Guided a group of 10 high school students through hands-on sequencing and genome annotation tasks,
-                        adapting and explaining technical concepts for non-expert audiences, as well as collaborating with
-                        them to troubleshoot errors and ensure succesful completion.
-                    </li>
-                </ul>
-            </div>
-
-            <div className="card">
-                <div className="card-header">
-                    <h3>AJ Fitness Swim Team</h3>
-                    <span className="location">Tegucigalpa, Honduras</span>
-                </div>
-                <p className="role">Club Team Captain</p>
-                <p className="date">July 2021 - August 2022</p>
-                <ul>
-                    <li>Led by example in both practice and competition, motivating
-                        and inspiring fellow team members to consistently acheive peak performance.</li>
-                </ul>
-            </div>
-
-            <div className="card">
-                <div className="card-header">
-                    <h3>Compass Group</h3>
-                    <span className="location">Oxford, United Kingdom</span>
-                </div>
-                <p className="role">Front of House Team Member</p>
-                <p className="date">June 2025 – August 2025</p>
-                <ul>
-                    <li>Worked in a high-volume, time-critical catering environment
-                        requiring coordination, adaptability, and consistency under
-                        pressure.</li>
-                </ul>
+            <div className="timeline">
+                {experiences.map(({ role, employer, location, date, logo, bullets }, i) => (
+                    <div className="timeline-entry" key={role}>
+                        <div className="timeline-dot" />
+                        <div
+                            className={`card timeline-card exp-card${openIndex === i ? ' open' : ''}`}
+                            onClick={() => toggle(i)}
+                        >
+                            <div className="exp-header">
+                                <img src={logo} alt={employer} className="exp-logo" />
+                                <div className="exp-header-info">
+                                    <div className="card-header">
+                                        <p className="role">{role}</p>
+                                        <span className="date">{date}</span>
+                                    </div>
+                                    <span className="location">{employer} · {location}</span>
+                                </div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className={`exp-chevron${openIndex === i ? ' open' : ''}`}
+                                >
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </div>
+                            <div className="exp-detail">
+                                <div className="exp-detail-inner">
+                                    <ul>
+                                        {bullets.map((b, j) => <li key={j}>{b}</li>)}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
     )

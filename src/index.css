@@ -52,6 +52,7 @@ body.dark-mode {
   --color-sidebar-hover: #2e2c2a;
   --color-text: #e8e4dc;
   --color-text-muted: #7a7672;
+  --color-accent: #b0ada6;
   --color-border: #3a3835;
   --color-card-bg: #323028;
 }
@@ -60,6 +61,7 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  font-family: var(--font-sans);
   background-color: var(--color-bg);
   overscroll-behavior: none;
 }
