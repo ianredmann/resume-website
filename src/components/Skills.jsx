@@ -1,26 +1,42 @@
+import jsIcon       from '../assets/skills/javascript.svg'
+import pyIcon       from '../assets/skills/python.svg'
+import javaIcon     from '../assets/skills/java.svg'
+import rubyIcon     from '../assets/skills/ruby.svg'
+import ocamlIcon    from '../assets/skills/ocaml.svg'
+import cIcon        from '../assets/skills/c.svg'
+import reactIcon    from '../assets/skills/react.svg'
+import html5Icon    from '../assets/skills/html5.svg'
+import css3Icon     from '../assets/skills/css3.svg'
+import tailwindIcon from '../assets/skills/tailwind.svg'
+import nodejsIcon   from '../assets/skills/nodejs.svg'
+import sqliteIcon   from '../assets/skills/sqlite.svg'
+import gitIcon      from '../assets/skills/git.svg'
+import flagGb       from '../assets/skills/flag-gb.svg'
+import flagEs       from '../assets/skills/flag-es.svg'
+
 const programmingLanguages = [
-    { name: 'JavaScript', src: 'https://cdn.simpleicons.org/javascript' },
-    { name: 'Python',     src: 'https://cdn.simpleicons.org/python' },
-    { name: 'Java',       src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
-    { name: 'Ruby',       src: 'https://cdn.simpleicons.org/ruby' },
-    { name: 'OCaml',      src: 'https://cdn.simpleicons.org/ocaml' },
-    { name: 'C',          src: 'https://cdn.simpleicons.org/c' },
+    { name: 'JavaScript', src: jsIcon },
+    { name: 'Python',     src: pyIcon },
+    { name: 'Java',       src: javaIcon },
+    { name: 'Ruby',       src: rubyIcon },
+    { name: 'OCaml',      src: ocamlIcon },
+    { name: 'C',          src: cIcon },
     { name: 'Assembly',   src: null },
 ]
 
 const webAndTools = [
-    { name: 'React',    src: 'https://cdn.simpleicons.org/react' },
-    { name: 'HTML5',    src: 'https://cdn.simpleicons.org/html5' },
-    { name: 'CSS3',     src: 'https://cdn.simpleicons.org/css' },
-    { name: 'Tailwind', src: 'https://cdn.simpleicons.org/tailwindcss' },
-    { name: 'Node.js',  src: 'https://cdn.simpleicons.org/nodedotjs' },
-    { name: 'SQLite',   src: 'https://cdn.simpleicons.org/sqlite' },
-    { name: 'Git',      src: 'https://cdn.simpleicons.org/git' },
+    { name: 'React',    src: reactIcon },
+    { name: 'HTML5',    src: html5Icon },
+    { name: 'CSS3',     src: css3Icon },
+    { name: 'Tailwind', src: tailwindIcon },
+    { name: 'Node.js',  src: nodejsIcon },
+    { name: 'SQLite',   src: sqliteIcon },
+    { name: 'Git',      src: gitIcon },
 ]
 
 const spokenLanguages = [
-    { name: 'English', level: 'Fluent', flag: 'https://flagcdn.com/gb.svg' },
-    { name: 'Spanish', level: 'Fluent', flag: 'https://flagcdn.com/es.svg' },
+    { name: 'English', level: 'Fluent', flag: flagGb },
+    { name: 'Spanish', level: 'Fluent', flag: flagEs },
 ]
 
 function AssemblyIcon() {
@@ -39,7 +55,7 @@ function AssemblyIcon() {
 }
 
 function TickerRow({ label, items }) {
-    const doubled = [...items, ...items]
+    const doubled = [...items, ...items, ...items]
     return (
         <div className="card ticker-section">
             <p className="ticker-category">{label}</p>
@@ -48,7 +64,7 @@ function TickerRow({ label, items }) {
                     {doubled.map((item, i) => (
                         <div className="ticker-item" key={i}>
                             {item.src
-                                ? <img src={item.src} alt={item.name} className="ticker-icon" loading="lazy" />
+                                ? <img src={item.src} alt={item.name} className="ticker-icon" />
                                 : <AssemblyIcon />
                             }
                             <span className="ticker-name">{item.name}</span>

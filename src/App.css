@@ -34,6 +34,8 @@
   font-weight: 700;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .sidebar nav ul {
@@ -305,7 +307,7 @@ section h2 {
 
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-33.33%); }
 }
 
 .ticker-section {
@@ -693,6 +695,10 @@ section h2 {
   display: none;
 }
 
+.mobile-logo-link {
+  display: none;
+}
+
 .mobile-bio {
   display: none;
 }
@@ -1006,7 +1012,8 @@ section h2 {
   }
 
   .sidebar nav.open {
-    max-height: 500px;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
     opacity: 1;
     padding: 1rem;
     border-top: 1px solid var(--color-border);
@@ -1046,6 +1053,12 @@ section h2 {
 
   .mobile-logo {
     display: block;
+  }
+
+  .mobile-logo-link {
+    display: flex;
+    align-items: center;
+    line-height: 0;
   }
 
   .mobile-bio {

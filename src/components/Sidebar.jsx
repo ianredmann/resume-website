@@ -51,7 +51,7 @@ function Sidebar() {
     const locationRef = useRef(null)
 
     const sections = [
-        { id: 'about', label: 'About' },
+        { id: 'about', label: 'Home' },
         { id: 'education', label: 'Education' },
         { id: 'athletics', label: 'Athletics' },
         { id: 'projects', label: 'Projects' },
@@ -195,10 +195,10 @@ function Sidebar() {
     return (
         <aside className="sidebar">
             <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
-            <IrLogo />
+            <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="mobile-logo-link"><IrLogo /></a>
 
             <div className="sidebar-top">
-                <div className="sidebar-name">Ian Redman</div>
+                <a href="#about" className="sidebar-name" onClick={(e) => handleNavClick(e, 'about')}>Ian Redman</a>
                 <div className="sidebar-bio">
                     <p className="sidebar-role">Full-Stack | Data Analyst</p>
                     <div className="location-widget" ref={locationRef}>
