@@ -42,13 +42,15 @@ function IrLogo() {
 
 function Sidebar() {
     const [activeSection, setActiveSection] = useState('about')
-    const [darkMode, setDarkMode] = useState(false)
+    const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark')
     const [menuOpen, setMenuOpen] = useState(false)
     const [locationOpen, setLocationOpen] = useState(false)
+    const [obuOpen, setObuOpen] = useState(false)
     const [localTime, setLocalTime] = useState(formatTime)
     const [distance, setDistance] = useState(null)
     const [locating, setLocating] = useState(false)
     const locationRef = useRef(null)
+    const obuRef = useRef(null)
 
     const sections = [
         { id: 'about', label: 'Home' },
@@ -119,6 +121,7 @@ function Sidebar() {
 
     useEffect(() => {
         document.body.classList.toggle('dark-mode', darkMode)
+        localStorage.setItem('theme', darkMode ? 'dark' : 'light')
     }, [darkMode])
 
     useEffect(() => {
@@ -130,6 +133,8 @@ function Sidebar() {
         const handler = e => {
             if (locationRef.current && !locationRef.current.contains(e.target))
                 setLocationOpen(false)
+            if (obuRef.current && !obuRef.current.contains(e.target))
+                setObuOpen(false)
         }
         document.addEventListener('mousedown', handler)
         return () => document.removeEventListener('mousedown', handler)
@@ -194,13 +199,54 @@ function Sidebar() {
 
     return (
         <aside className="sidebar">
-            <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
+            <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '✕' : '☰'}</button>
             <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="mobile-logo-link"><IrLogo /></a>
+            {menuOpen && <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />}
 
             <div className="sidebar-top">
                 <a href="#about" className="sidebar-name" onClick={(e) => handleNavClick(e, 'about')}>Ian Redman</a>
                 <div className="sidebar-bio">
-                    <p className="sidebar-role">Full-Stack | Data Analyst</p>
+                    <p className="sidebar-role">
+                        CS & Mathematics ·{' '}
+                        <span className="obu-widget" ref={obuRef}>
+                            <span
+                                className="obu-trigger"
+                                onClick={() => setObuOpen(o => !o)}
+                                role="button"
+                                aria-expanded={obuOpen}
+                            >OBU '26</span>
+                            {obuOpen && (
+                                <div className="obu-popup">
+                                    <div className="location-popup-header">
+                                        <span className="location-popup-city">Ouachita Baptist University</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Location</span>
+                                        <span>Arkadelphia, AR</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Founded</span>
+                                        <span>1886</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Enrollment</span>
+                                        <span>~1,500 students</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Conference</span>
+                                        <span>GAC · NCAA DII</span>
+                                    </div>
+                                    <div className="location-popup-divider" />
+                                    <a
+                                        href="https://www.obu.edu"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="location-btn"
+                                    >Visit obu.edu →</a>
+                                </div>
+                            )}
+                        </span>
+                    </p>
                     <div className="location-widget" ref={locationRef}>
                         <div
                             className="location-trigger"
@@ -268,11 +314,96 @@ function Sidebar() {
                     ))}
                 </ul>
                 <div className="mobile-bio">
-                    <p className="sidebar-role">Full-Stack | Data Analyst</p>
-                    <p className="mobile-location-text">
-                        <span className="location-dot" />
-                        Houston, Texas
+                    <p className="sidebar-role">
+                        CS & Mathematics ·{' '}
+                        <span className="obu-widget">
+                            <span
+                                className="obu-trigger"
+                                onClick={() => setObuOpen(o => !o)}
+                                role="button"
+                                aria-expanded={obuOpen}
+                            >OBU '26</span>
+                            {obuOpen && (
+                                <div className="obu-popup">
+                                    <div className="location-popup-header">
+                                        <span className="location-popup-city">Ouachita Baptist University</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Location</span>
+                                        <span>Arkadelphia, AR</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Founded</span>
+                                        <span>1886</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Enrollment</span>
+                                        <span>~1,500 students</span>
+                                    </div>
+                                    <div className="location-popup-row">
+                                        <span>Conference</span>
+                                        <span>GAC · NCAA DII</span>
+                                    </div>
+                                    <div className="location-popup-divider" />
+                                    <a
+                                        href="https://www.obu.edu"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="location-btn"
+                                    >Visit obu.edu →</a>
+                                </div>
+                            )}
+                        </span>
                     </p>
+                    <div className="location-widget">
+                        <div
+                            className="location-trigger"
+                            onClick={() => setLocationOpen(o => !o)}
+                            role="button"
+                            aria-expanded={locationOpen}
+                        >
+                            <span className="location-dot" />
+                            <span>Houston, Texas</span>
+                            <span className="location-time">{localTime}</span>
+                        </div>
+                        {locationOpen && (
+                            <div className="location-popup">
+                                <div className="location-popup-header">
+                                    <span className="location-dot" />
+                                    <span className="location-popup-city">Houston, Texas</span>
+                                </div>
+                                <div className="location-popup-row">
+                                    <span>Timezone</span>
+                                    <span>Central (CT)</span>
+                                </div>
+                                <div className="location-popup-row">
+                                    <span>Local time</span>
+                                    <span>{localTime}</span>
+                                </div>
+                                <div className="location-popup-row">
+                                    <span>Work style</span>
+                                    <span>Hybrid / On-site</span>
+                                </div>
+                                {distance !== null && (
+                                    <div className="location-popup-row">
+                                        <span>Distance</span>
+                                        <span>{distance < 10 ? "You're here!" : `${distance.toLocaleString()} mi away`}</span>
+                                    </div>
+                                )}
+                                <div className="location-popup-divider" />
+                                <button
+                                    className="location-btn"
+                                    onClick={handleLocate}
+                                    disabled={locating}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                    </svg>
+                                    {locating ? 'Locating…' : distance !== null ? 'Update location' : 'Use my location'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="mobile-nav-footer">
                     {linkedinLink}

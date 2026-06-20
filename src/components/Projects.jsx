@@ -55,6 +55,11 @@ function Projects() {
                         key={title}
                         className={`project-card-wrapper${flipped[i] ? ' flipped' : ''}`}
                         onClick={() => toggle(i)}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={flipped[i]}
+                        aria-label={`${title} — click to ${flipped[i] ? 'see overview' : 'see details'}`}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i) } }}
                     >
                         <div className="project-card-inner">
 

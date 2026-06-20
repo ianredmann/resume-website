@@ -55,13 +55,13 @@ function AssemblyIcon() {
 }
 
 function TickerRow({ label, items }) {
-    const doubled = [...items, ...items, ...items]
+    const tripled = [...items, ...items, ...items]
     return (
         <div className="card ticker-section">
             <p className="ticker-category">{label}</p>
             <div className="ticker-wrapper">
                 <div className="ticker-track">
-                    {doubled.map((item, i) => (
+                    {tripled.map((item, i) => (
                         <div className="ticker-item" key={i}>
                             {item.src
                                 ? <img src={item.src} alt={item.name} className="ticker-icon" />

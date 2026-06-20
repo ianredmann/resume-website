@@ -78,6 +78,10 @@ function Experience() {
                         <div
                             className={`card timeline-card exp-card${openIndex === i ? ' open' : ''}`}
                             onClick={() => toggle(i)}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={openIndex === i}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i) } }}
                         >
                             <div className="exp-header">
                                 <img src={logo} alt={employer} className="exp-logo" />
