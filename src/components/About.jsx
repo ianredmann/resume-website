@@ -1,4 +1,4 @@
-import photo from '../assets/IMG_3007.avif'
+import photo from '../assets/photo-about.avif'
 
 function About(){
     return(

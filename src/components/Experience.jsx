@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import obuLogo from '../assets/Unknown-1.png'
-import ajLogo from '../assets/logo-v2.png'
-import compassLogo from '../assets/Compass_Group.svg.png'
+import obuLogo from '../assets/obu-tiger-logo.png'
+import ajLogo from '../assets/aj-fitness-logo.png'
+import compassLogo from '../assets/compass-group-logo.png'
 
 const experiences = [
     {

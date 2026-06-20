@@ -1,10 +1,10 @@
-import photoBW from '../assets/IMG_2467.avif'
-import photoSwim from '../assets/IMG_1138.avif'
-import photoBlock from '../assets/IMG_9974.avif'
+import photoBW from '../assets/photo-swim-bw.avif'
+import photoSwim from '../assets/photo-swimming.avif'
+import photoBlock from '../assets/photo-block.avif'
 import obuLogo from '../assets/ouachita-baptist.svg'
-import ncaaLogo from '../assets/NCAA_DII_logo_c.svg'
-import champ2025Logo from '../assets/25_D2_Festival_RGB.png.avif'
-import champ2026Logo from '../assets/logo_2026-DII-Swimming-and-Diving-National-Championships.png'
+import ncaaLogo from '../assets/ncaa-dii-logo.svg'
+import champ2025Logo from '../assets/champ-2025-ncaa-dii.avif'
+import champ2026Logo from '../assets/champ-2026-ncaa-dii.png'
 
 const stats = [
     { value: '×2', label: 'All-American', area: 'stat-aa' },
