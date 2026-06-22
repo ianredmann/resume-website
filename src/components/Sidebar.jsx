@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 const LINKEDIN_HREF = 'https://linkedin.com/in/ian-redman-1288b4263/'
 const GITHUB_HREF = 'https://github.com/ianredmann'
@@ -22,6 +23,19 @@ function formatTime() {
         minute: '2-digit',
         hour12: true,
     })
+}
+
+function ThemeIcon({ darkMode, size = 19 }) {
+    return (
+        <span className={`theme-icon-wrap${darkMode ? ' dark' : ''}`} style={{ width: size, height: size }}>
+            <svg className="icon-sun" xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85 1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"/>
+            </svg>
+            <svg className="icon-moon" xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </span>
+    )
 }
 
 function IrLogo() {
@@ -51,6 +65,8 @@ function Sidebar() {
     const [locating, setLocating] = useState(false)
     const locationRef = useRef(null)
     const obuRef = useRef(null)
+    const locationMobileRef = useRef(null)
+    const obuMobileRef = useRef(null)
 
     const sections = [
         { id: 'about', label: 'Home' },
@@ -125,16 +141,36 @@ function Sidebar() {
     }, [darkMode])
 
     useEffect(() => {
+        const meta = document.querySelector('meta[name="theme-color"]')
+        if (!meta) return
+        meta.setAttribute('content', darkMode ? '#1e1c1a' : '#ede9e1')
+    }, [darkMode, menuOpen])
+
+    useEffect(() => {
         const id = setInterval(() => setLocalTime(formatTime()), 1000)
         return () => clearInterval(id)
     }, [])
 
     useEffect(() => {
+        if (!menuOpen) return
+        const scrollY = window.scrollY
+        document.body.style.position = 'fixed'
+        document.body.style.top = `-${scrollY}px`
+        document.body.style.width = '100%'
+        return () => {
+            document.body.style.position = ''
+            document.body.style.top = ''
+            document.body.style.width = ''
+            window.scrollTo(0, scrollY)
+        }
+    }, [menuOpen])
+
+    useEffect(() => {
         const handler = e => {
-            if (locationRef.current && !locationRef.current.contains(e.target))
-                setLocationOpen(false)
-            if (obuRef.current && !obuRef.current.contains(e.target))
-                setObuOpen(false)
+            const inLocation = (locationRef.current?.contains(e.target)) || (locationMobileRef.current?.contains(e.target))
+            const inObu = (obuRef.current?.contains(e.target)) || (obuMobileRef.current?.contains(e.target))
+            if (!inLocation) setLocationOpen(false)
+            if (!inObu) setObuOpen(false)
         }
         document.addEventListener('mousedown', handler)
         return () => document.removeEventListener('mousedown', handler)
@@ -184,24 +220,34 @@ function Sidebar() {
             onClick={() => setDarkMode(!darkMode)}
             title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-            {darkMode ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85 1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"/>
-                </svg>
-            ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
-                </svg>
-            )}
+            <ThemeIcon darkMode={darkMode} size={15} />
             {darkMode ? 'Light mode' : 'Dark mode'}
         </button>
     )
 
     return (
         <aside className="sidebar">
-            <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '✕' : '☰'}</button>
+            <div className="mobile-left-group">
+                <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                    <span className={`hamburger-lines${menuOpen ? ' open' : ''}`}>
+                        <span className="line" />
+                        <span className="line" />
+                        <span className="line" />
+                    </span>
+                </button>
+                <button
+                    className="mobile-theme-btn"
+                    onClick={() => setDarkMode(d => !d)}
+                    aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                    <ThemeIcon darkMode={darkMode} />
+                </button>
+            </div>
+            {menuOpen && createPortal(
+                <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />,
+                document.body
+            )}
             <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="mobile-logo-link"><IrLogo /></a>
-            {menuOpen && <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />}
 
             <div className="sidebar-top">
                 <a href="#about" className="sidebar-name" onClick={(e) => handleNavClick(e, 'about')}>Ian Redman</a>
@@ -316,7 +362,7 @@ function Sidebar() {
                 <div className="mobile-bio">
                     <p className="sidebar-role">
                         CS & Mathematics ·{' '}
-                        <span className="obu-widget">
+                        <span className="obu-widget" ref={obuMobileRef}>
                             <span
                                 className="obu-trigger"
                                 onClick={() => setObuOpen(o => !o)}
@@ -355,7 +401,7 @@ function Sidebar() {
                             )}
                         </span>
                     </p>
-                    <div className="location-widget">
+                    <div className="location-widget" ref={locationMobileRef}>
                         <div
                             className="location-trigger"
                             onClick={() => setLocationOpen(o => !o)}
@@ -408,7 +454,6 @@ function Sidebar() {
                 <div className="mobile-nav-footer">
                     {linkedinLink}
                     {githubLink}
-                    {themeToggle}
                 </div>
             </nav>
 

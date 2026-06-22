@@ -9,10 +9,11 @@
   width: 240px;
   min-height: 100vh;
   background-color: var(--color-sidebar);
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 2rem calc(1.5rem + env(safe-area-inset-left));
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -63,7 +64,7 @@
 
 .content {
   margin-left: 240px;
-  padding: 3rem 240px 3rem 4rem;
+  padding: 3rem calc(240px + env(safe-area-inset-right)) 3rem 4rem;
   flex: 1;
   min-width: 0;
   max-width: 1400px;
@@ -220,6 +221,7 @@ section h2 {
 
 .contact-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -714,6 +716,77 @@ body.dark-mode .about-photo {
   display: none;
 }
 
+.hamburger-lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 15px;
+}
+
+.hamburger-lines .line {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.hamburger-lines.open .line:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.hamburger-lines.open .line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-lines.open .line:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.theme-icon-wrap {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.theme-icon-wrap svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease, transform 0.35s ease;
+}
+
+.theme-icon-wrap .icon-sun {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.5);
+}
+
+.theme-icon-wrap .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-icon-wrap.dark .icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-icon-wrap.dark .icon-moon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.5);
+}
+
+.mobile-theme-btn {
+  display: none;
+}
+
+.mobile-left-group {
+  display: none;
+}
+
 .mobile-header-name {
   display: none;
 }
@@ -949,7 +1022,7 @@ body.dark-mode .about-photo {
 
 @media (max-width: 1100px) and (min-width: 769px) {
   .content {
-    padding-right: 2rem;
+    padding-right: calc(2rem + env(safe-area-inset-right));
   }
 
   .about-photo {
@@ -969,9 +1042,15 @@ body.dark-mode .about-photo {
     transform: none;
     transition: none;
   }
+  .hamburger-lines .line {
+    transition: none;
+  }
+  .theme-icon-wrap svg {
+    transition: none;
+  }
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px), (max-height: 500px) and (orientation: landscape) {
 
   .sidebar {
     flex-direction: row;
@@ -979,11 +1058,14 @@ body.dark-mode .about-photo {
     width: 100%;
     min-height: unset;
     height: 60px;
-    padding: 0 1rem;
+    padding: 0 calc(1rem + env(safe-area-inset-right)) 0 calc(1rem + env(safe-area-inset-left));
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 130;
+    background-color: var(--color-sidebar-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 
   .sidebar-top {
@@ -997,6 +1079,7 @@ body.dark-mode .about-photo {
     top: 60px;
     background: rgba(0, 0, 0, 0.35);
     z-index: 110;
+    cursor: pointer;
   }
 
   .sidebar nav {
@@ -1015,6 +1098,7 @@ body.dark-mode .about-photo {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 120;
+    will-change: transform;
   }
 
   .sidebar nav.open {
@@ -1034,6 +1118,12 @@ body.dark-mode .about-photo {
     display: none;
   }
 
+  .mobile-left-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
   .hamburger {
     display: block;
     font-size: 1.4rem;
@@ -1041,6 +1131,18 @@ body.dark-mode .about-photo {
     border: none;
     cursor: pointer;
     color: var(--color-text);
+  }
+
+  .mobile-theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    padding: 0.35rem;
+    border-radius: 8px;
   }
 
   .mobile-header-name {
@@ -1085,7 +1187,7 @@ body.dark-mode .about-photo {
 
   .content {
     margin-left: 0;
-    padding: 5rem 1.5rem 2rem 1.5rem;
+    padding: 5rem calc(1.5rem + env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) calc(1.5rem + env(safe-area-inset-left));
   }
 
   .card-header {
@@ -1096,8 +1198,12 @@ body.dark-mode .about-photo {
 
   .athletics-bento {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 110px 120px 75px 75px 85px;
+    grid-template-rows: 110px 120px 90px 90px 85px;
     gap: 0.5rem;
+  }
+
+  .bento-champs {
+    grid-template-columns: 1fr;
   }
 
   .bento-stat {
