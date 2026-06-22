@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import Sidebar from './components/Sidebar'
+import Navbar from './components/Navbar'
 import About from './components/About'
 import Education from './components/Education'
 import Athletics from './components/Athletics'
@@ -11,7 +11,7 @@ import './App.css'
 
 function App(){
   useEffect(() => {
-    const cards = document.querySelectorAll('.card')
+    const cards = document.querySelectorAll('.card:not(.ath-cell)')
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -35,7 +35,7 @@ function App(){
 
   return(
     <div className="app">
-      <Sidebar />
+      <Navbar />
       <main className='content'>
         <About />
         <Education />
