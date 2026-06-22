@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import GlassSurface from './GlassSurface'
 
 const LINKEDIN_HREF = 'https://linkedin.com/in/ian-redman-1288b4263/'
 const GITHUB_HREF = 'https://github.com/ianredmann'
@@ -47,7 +48,8 @@ function Navbar() {
     const [activeSection, setActiveSection] = useState('home')
     const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark')
     const [menuOpen, setMenuOpen] = useState(false)
-    const [scrollProgress, setScrollProgress] = useState(0)
+    const progressRef = useRef(null)
+    const pendingScrollRef = useRef(null)
 
     useEffect(() => {
         const wasAtEdge = { current: false }
@@ -107,10 +109,12 @@ function Navbar() {
     }, [])
 
     useEffect(() => {
+        const fill = progressRef.current
+        if (!fill) return
         const update = () => {
             const scrolled = window.scrollY
             const total = document.documentElement.scrollHeight - window.innerHeight
-            setScrollProgress(total > 0 ? (scrolled / total) * 100 : 0)
+            fill.style.width = `${total > 0 ? (scrolled / total) * 100 : 0}%`
         }
         update()
         window.addEventListener('scroll', update, { passive: true })
@@ -129,7 +133,20 @@ function Navbar() {
     }, [darkMode, menuOpen])
 
     useEffect(() => {
-        if (!menuOpen) return
+        if (!menuOpen) {
+            const id = pendingScrollRef.current
+            if (!id) return
+            pendingScrollRef.current = null
+            requestAnimationFrame(() => {
+                if (id === 'home') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                } else {
+                    const section = document.getElementById(id)
+                    if (section) section.scrollIntoView({ behavior: 'smooth' })
+                }
+            })
+            return
+        }
         const scrollY = window.scrollY
         document.body.style.position = 'fixed'
         document.body.style.top = `-${scrollY}px`
@@ -144,19 +161,33 @@ function Navbar() {
 
     const handleNavClick = (e, id) => {
         e.preventDefault()
-        setMenuOpen(false)
-        if (id === 'home') {
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-            return
+        if (menuOpen) {
+            pendingScrollRef.current = id
+            setMenuOpen(false)
+        } else {
+            if (id === 'home') {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            } else {
+                const section = document.getElementById(id)
+                if (section) section.scrollIntoView({ behavior: 'smooth' })
+            }
         }
-        const section = document.getElementById(id)
-        if (section) section.scrollIntoView({ behavior: 'smooth' })
     }
 
     return (
         <header className="topnav">
+            <GlassSurface
+                width="100%"
+                height="100%"
+                borderRadius={0}
+                borderWidth={0.04}
+                backgroundOpacity={0.3}
+                distortionScale={-100}
+                blur={14}
+                saturation={1.3}
+            >
             <div className="topnav-progress">
-                <div className="topnav-progress-fill" style={{ width: `${scrollProgress}%` }} />
+                <div className="topnav-progress-fill" ref={progressRef} />
             </div>
 
             <div className="topnav-inner">
@@ -201,18 +232,28 @@ function Navbar() {
                     </div>
                 </div>
 
-                <button
-                    className="hamburger"
-                    onClick={() => setMenuOpen(m => !m)}
-                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-                >
-                    <span className={`hamburger-lines${menuOpen ? ' open' : ''}`}>
-                        <span className="line" />
-                        <span className="line" />
-                        <span className="line" />
-                    </span>
-                </button>
+                <div className="mobile-left-group">
+                    <button
+                        className="mobile-theme-btn"
+                        onClick={() => setDarkMode(d => !d)}
+                        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        <ThemeIcon darkMode={darkMode} />
+                    </button>
+                    <button
+                        className="hamburger"
+                        onClick={() => setMenuOpen(m => !m)}
+                        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    >
+                        <span className={`hamburger-lines${menuOpen ? ' open' : ''}`}>
+                            <span className="line" />
+                            <span className="line" />
+                            <span className="line" />
+                        </span>
+                    </button>
+                </div>
             </div>
+            </GlassSurface>
 
             {menuOpen && createPortal(
                 <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />,
@@ -246,14 +287,6 @@ function Navbar() {
                         </svg>
                         <span>GitHub</span>
                     </a>
-                    <button
-                        className="theme-toggle"
-                        onClick={() => setDarkMode(d => !d)}
-                        title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                    >
-                        <ThemeIcon darkMode={darkMode} size={15} />
-                        {darkMode ? 'Light mode' : 'Dark mode'}
-                    </button>
                 </div>
             </nav>
         </header>

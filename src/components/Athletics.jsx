@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import photoBW from '../assets/photo-swim-bw.avif'
 import photoSwim from '../assets/photo-swimming.avif'
 import photoBlock from '../assets/photo-block.avif'
@@ -7,10 +8,10 @@ import champ2025Logo from '../assets/champ-2025-ncaa-dii.avif'
 import champ2026Logo from '../assets/champ-2026-ncaa-dii.png'
 
 const stats = [
-    { value: '×2', label: 'All-American', area: 'stat-aa' },
-    { value: '×2', label: 'First Team All-Conference', area: 'stat-1ac' },
-    { value: '×1', label: 'Second Team All-Conference', area: 'stat-2ac' },
-    { value: '×2', label: 'Academic All-District', area: 'stat-acd' },
+    { value: '×2', label: 'All-American', area: 'stat-aa', delay: '0.45s' },
+    { value: '×2', label: 'First Team All-Conference', area: 'stat-1ac', delay: '0.30s' },
+    { value: '×1', label: 'Second Team All-Conference', area: 'stat-2ac', delay: '0.35s' },
+    { value: '×2', label: 'Academic All-District', area: 'stat-acd', delay: '0.40s' },
 ]
 
 const championships = [
@@ -31,46 +32,65 @@ const championships = [
 ]
 
 function Athletics() {
+    const bentoRef = useRef(null)
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true)
+                    observer.disconnect()
+                }
+            },
+            { threshold: 0.1 }
+        )
+        if (bentoRef.current) observer.observe(bentoRef.current)
+        return () => observer.disconnect()
+    }, [])
+
+    const bentoClass = `athletics-bento${visible ? ' ath-visible' : ''}`
+
     return (
         <section id="athletics">
             <h2>Athletics</h2>
-            <div className="athletics-bento">
+            <div className={bentoClass} ref={bentoRef}>
 
-                <div className="bento-photo" style={{ gridArea: 'photo-bw' }}>
+                <div className="bento-photo ath-cell" style={{ gridArea: 'photo-bw', animationDelay: '0.28s' }}>
                     <img src={photoBW} alt="Ian Redman in swim cap" />
                 </div>
 
-                {stats.map(({ value, label, area }) => (
-                    <div key={label} className="card bento-stat" style={{ gridArea: area }}>
+                {stats.map(({ value, label, area, delay }) => (
+                    <div key={label} className="card bento-stat ath-cell" style={{ gridArea: area, animationDelay: delay }}>
                         <span className="honor-value">{value}</span>
                         <span className="honor-label">{label}</span>
                     </div>
                 ))}
 
-                <div className="card bento-logo" style={{ gridArea: 'obu-logo' }}>
-                    <img src={obuLogo} alt="Ouachita Baptist University" />
-                </div>
-
-                <div className="card bento-logo" style={{ gridArea: 'ncaa-logo' }}>
+                <div className="card bento-logo ath-cell" style={{ gridArea: 'ncaa-logo', animationDelay: '0.05s' }}>
                     <img src={ncaaLogo} alt="NCAA Division II" />
                 </div>
 
-                <div className="bento-photo" style={{ gridArea: 'photo-sw' }}>
+                <div className="card bento-logo ath-cell" style={{ gridArea: 'obu-logo', animationDelay: '0.10s' }}>
+                    <img src={obuLogo} alt="Ouachita Baptist University" />
+                </div>
+
+                <div className="bento-photo ath-cell" style={{ gridArea: 'photo-sw', animationDelay: '0.52s' }}>
                     <img src={photoSwim} alt="Ian Redman swimming freestyle" style={{ objectPosition: 'center center' }} />
                 </div>
 
-                <div className="bento-photo" style={{ gridArea: 'photo-blk' }}>
+                <div className="bento-photo ath-cell" style={{ gridArea: 'photo-blk', animationDelay: '0s' }}>
                     <img src={photoBlock} alt="Ian Redman at the block" />
                 </div>
 
-                <div className="bento-champs" style={{ gridArea: 'champs' }}>
+                <div className="bento-champs ath-cell" style={{ gridArea: 'champs', animationDelay: '0.18s' }}>
                     {championships.map(({ year, logo, event, place, url }) => (
                         <a
                             key={year}
                             href={url}
                             target="_blank"
                             rel="noreferrer"
-                            className="card bento-champ"
+                            className="card bento-champ ath-cell"
                         >
                             <img src={logo} alt={`${year} NCAA DII Championships`} className="championship-logo" />
                             <div className="championship-detail">

@@ -13,25 +13,35 @@ import sqliteIcon   from '../assets/skills/sqlite.svg'
 import gitIcon      from '../assets/skills/git.svg'
 import flagGb       from '../assets/skills/flag-gb.svg'
 import flagEs       from '../assets/skills/flag-es.svg'
+import LogoLoop     from './LogoLoop'
 
-const programmingLanguages = [
-    { name: 'JavaScript', src: jsIcon },
-    { name: 'Python',     src: pyIcon },
-    { name: 'Java',       src: javaIcon },
-    { name: 'Ruby',       src: rubyIcon },
-    { name: 'OCaml',      src: ocamlIcon },
-    { name: 'C',          src: cIcon },
-    { name: 'Assembly',   src: null },
+function AssemblyIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"
+            style={{ color: 'var(--color-text-muted)' }}>
+            <path d="M9 2v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9zm-2 4h10v10H7V6zm2 2v6h6V8H9z"/>
+        </svg>
+    )
+}
+
+const programmingLogos = [
+    { src: jsIcon,    alt: 'JavaScript' },
+    { src: pyIcon,    alt: 'Python' },
+    { src: javaIcon,  alt: 'Java' },
+    { src: rubyIcon,  alt: 'Ruby' },
+    { src: ocamlIcon, alt: 'OCaml' },
+    { src: cIcon,     alt: 'C' },
+    { node: <AssemblyIcon />, ariaLabel: 'Assembly' },
 ]
 
-const webAndTools = [
-    { name: 'React',    src: reactIcon },
-    { name: 'HTML5',    src: html5Icon },
-    { name: 'CSS3',     src: css3Icon },
-    { name: 'Tailwind', src: tailwindIcon },
-    { name: 'Node.js',  src: nodejsIcon },
-    { name: 'SQLite',   src: sqliteIcon },
-    { name: 'Git',      src: gitIcon },
+const webAndToolsLogos = [
+    { src: reactIcon,    alt: 'React' },
+    { src: html5Icon,    alt: 'HTML5' },
+    { src: css3Icon,     alt: 'CSS3' },
+    { src: tailwindIcon, alt: 'Tailwind' },
+    { src: nodejsIcon,   alt: 'Node.js' },
+    { src: sqliteIcon,   alt: 'SQLite' },
+    { src: gitIcon,      alt: 'Git' },
 ]
 
 const spokenLanguages = [
@@ -39,49 +49,41 @@ const spokenLanguages = [
     { name: 'Spanish', level: 'Fluent', flag: flagEs },
 ]
 
-function AssemblyIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            style={{ color: 'var(--color-text-muted)' }}
-        >
-            <path d="M9 2v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9zm-2 4h10v10H7V6zm2 2v6h6V8H9z"/>
-        </svg>
-    )
-}
-
-function TickerRow({ label, items }) {
-    const tripled = [...items, ...items, ...items]
-    return (
-        <div className="card ticker-section">
-            <p className="ticker-category">{label}</p>
-            <div className="ticker-wrapper">
-                <div className="ticker-track">
-                    {tripled.map((item, i) => (
-                        <div className="ticker-item" key={i}>
-                            {item.src
-                                ? <img src={item.src} alt={item.name} className="ticker-icon" />
-                                : <AssemblyIcon />
-                            }
-                            <span className="ticker-name">{item.name}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-}
-
 function Skills() {
     return (
         <section id="skills">
             <h2>Skills</h2>
-            <TickerRow label="Programming Languages" items={programmingLanguages} />
-            <TickerRow label="Web & Tools" items={webAndTools} />
+
+            <div className="card ticker-section">
+                <p className="ticker-category">Programming Languages</p>
+                <LogoLoop
+                    logos={programmingLogos}
+                    speed={55}
+                    logoHeight={36}
+                    gap={40}
+                    pauseOnHover
+                    scaleOnHover
+                    fadeOut
+                    fadeOutColor="var(--color-card-bg)"
+                    ariaLabel="Programming languages"
+                />
+            </div>
+
+            <div className="card ticker-section">
+                <p className="ticker-category">Web & Tools</p>
+                <LogoLoop
+                    logos={webAndToolsLogos}
+                    speed={55}
+                    logoHeight={36}
+                    gap={40}
+                    pauseOnHover
+                    scaleOnHover
+                    fadeOut
+                    fadeOutColor="var(--color-card-bg)"
+                    ariaLabel="Web and tools"
+                />
+            </div>
+
             <div className="card">
                 <p className="ticker-category">Spoken Languages</p>
                 <div className="skills-languages">

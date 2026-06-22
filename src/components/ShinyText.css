@@ -1,0 +1,28 @@
+.shiny-text {
+    --shiny-base: #b09840;
+    --shiny-shine: #f2e07a;
+    padding-right: 0.15em;
+    background-image: linear-gradient(
+        120deg,
+        var(--shiny-base) 0%,
+        var(--shiny-base) 35%,
+        var(--shiny-shine) 50%,
+        var(--shiny-base) 65%,
+        var(--shiny-base) 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shiny-sweep 4s linear infinite;
+}
+
+body.dark-mode .shiny-text {
+    --shiny-base: #9a8030;
+    --shiny-shine: #edd96a;
+}
+
+@keyframes shiny-sweep {
+    from { background-position: 200% center; }
+    to   { background-position: -200% center; }
+}
