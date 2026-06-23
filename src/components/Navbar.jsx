@@ -46,10 +46,49 @@ function IrLogo() {
 
 function Navbar() {
     const [activeSection, setActiveSection] = useState('home')
-    const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark')
+    const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') !== 'light')
     const [menuOpen, setMenuOpen] = useState(false)
     const progressRef = useRef(null)
     const pendingScrollRef = useRef(null)
+    const navRef = useRef(null)
+    const liRefs = useRef({})
+    const hoveringRef = useRef(false)
+    const [pill, setPill] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 })
+
+    const movePillTo = (id) => {
+        const li = liRefs.current[id]
+        const nav = navRef.current
+        if (!li || !nav) return
+        const navRect = nav.getBoundingClientRect()
+        const liRect = li.getBoundingClientRect()
+        setPill({
+            left: liRect.left - navRect.left,
+            top: liRect.top - navRect.top,
+            width: liRect.width,
+            height: liRect.height,
+            opacity: 1,
+        })
+    }
+
+    // Keep pill on active section while not hovering
+    useEffect(() => {
+        if (!hoveringRef.current) movePillTo(activeSection)
+    }, [activeSection]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Set initial pill position after mount
+    useEffect(() => {
+        movePillTo(activeSection)
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const onNavEnter = (id) => {
+        hoveringRef.current = true
+        movePillTo(id)
+    }
+
+    const onNavLeave = () => {
+        hoveringRef.current = false
+        movePillTo(activeSection)
+    }
 
     useEffect(() => {
         const wasAtEdge = { current: false }
@@ -196,10 +235,24 @@ function Navbar() {
                 </a>
 
                 <div className="topnav-right">
-                    <nav>
+                    <nav ref={navRef} onMouseLeave={onNavLeave}>
+                        <div
+                            className="nav-pill"
+                            style={{
+                                left: pill.left,
+                                top: pill.top,
+                                width: pill.width,
+                                height: pill.height,
+                                opacity: pill.opacity,
+                            }}
+                        />
                         <ul>
                             {sections.map(({ id, label }) => (
-                                <li key={id}>
+                                <li
+                                    key={id}
+                                    ref={el => { liRefs.current[id] = el }}
+                                    onMouseEnter={() => onNavEnter(id)}
+                                >
                                     <a
                                         href={`#${id}`}
                                         className={activeSection === id ? 'active' : ''}
