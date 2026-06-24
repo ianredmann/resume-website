@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  color-scheme: light;
   --color-bg: #f6f4ef;
   --color-sidebar: #ede9e1;
   --color-sidebar-glass: rgba(237, 233, 225, 0.65);
@@ -49,7 +48,6 @@ li {
 }
 
 body.dark-mode {
-  color-scheme: dark;
   --color-bg: #2a2825;
   --color-sidebar: #1e1c1a;
   --color-sidebar-glass: rgba(30, 28, 26, 0.65);

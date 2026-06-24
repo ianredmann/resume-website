@@ -53,7 +53,12 @@ function Navbar() {
     const navRef = useRef(null)
     const liRefs = useRef({})
     const hoveringRef = useRef(false)
+    const menuOpenRef = useRef(false)
     const [pill, setPill] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 })
+    const drawerNavRef = useRef(null)
+    const drawerLiRefs = useRef({})
+    const drawerHoveringRef = useRef(false)
+    const [drawerPill, setDrawerPill] = useState({ top: 0, height: 0, opacity: 0 })
 
     const movePillTo = (id) => {
         const li = liRefs.current[id]
@@ -90,6 +95,44 @@ function Navbar() {
         movePillTo(activeSection)
     }
 
+    const moveDrawerPillTo = (id) => {
+        const li = drawerLiRefs.current[id]
+        const nav = drawerNavRef.current
+        if (!li || !nav) return
+        const navRect = nav.getBoundingClientRect()
+        const liRect = li.getBoundingClientRect()
+        setDrawerPill({ top: liRect.top - navRect.top, height: liRect.height, opacity: 1 })
+    }
+
+    const onDrawerEnter = (id) => {
+        drawerHoveringRef.current = true
+        moveDrawerPillTo(id)
+    }
+
+    const onDrawerLeave = () => {
+        drawerHoveringRef.current = false
+        moveDrawerPillTo(activeSection)
+    }
+
+    // Keep drawer pill on active section while not hovering
+    useEffect(() => {
+        if (!drawerHoveringRef.current) moveDrawerPillTo(activeSection)
+    }, [activeSection]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Re-position drawer pill each time the drawer opens (rAF so DOM is laid out)
+    useEffect(() => {
+        if (menuOpen) requestAnimationFrame(() => moveDrawerPillTo(activeSection))
+    }, [menuOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => { menuOpenRef.current = menuOpen }, [menuOpen])
+
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 768px)')
+        const handleChange = (e) => { if (!e.matches) setMenuOpen(false) }
+        mq.addEventListener('change', handleChange)
+        return () => mq.removeEventListener('change', handleChange)
+    }, [])
+
     useEffect(() => {
         const wasAtEdge = { current: false }
 
@@ -109,7 +152,7 @@ function Navbar() {
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting && !wasAtEdge.current) {
+                    if (entry.isIntersecting && !wasAtEdge.current && !menuOpenRef.current) {
                         setActiveSection(entry.target.id)
                     }
                 })
@@ -122,6 +165,7 @@ function Navbar() {
         })
 
         const handleScroll = () => {
+            if (menuOpenRef.current) return
             const scrollTop = window.scrollY
             const scrollBottom = document.documentElement.scrollHeight - window.innerHeight - scrollTop
             if (scrollTop < 50) {
@@ -151,6 +195,7 @@ function Navbar() {
         const fill = progressRef.current
         if (!fill) return
         const update = () => {
+            if (menuOpenRef.current) return
             const scrolled = window.scrollY
             const total = document.documentElement.scrollHeight - window.innerHeight
             fill.style.width = `${total > 0 ? (scrolled / total) * 100 : 0}%`
@@ -161,29 +206,33 @@ function Navbar() {
     }, [])
 
     useEffect(() => {
-        document.body.classList.toggle('dark-mode', darkMode)
-        localStorage.setItem('theme', darkMode ? 'dark' : 'light')
-    }, [darkMode])
-
-    useEffect(() => {
+        const isDark = darkMode
+        document.body.classList.toggle('dark-mode', isDark)
+        // Set on <html> so Safari's browser chrome (status bar, address bar) and
+        // overscroll areas pick up the correct color-scheme and background.
+        document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
+        document.documentElement.style.backgroundColor = isDark ? '#2a2825' : '#f6f4ef'
         const meta = document.querySelector('meta[name="theme-color"]')
-        if (!meta) return
-        meta.setAttribute('content', darkMode ? '#1e1c1a' : '#ede9e1')
-    }, [darkMode, menuOpen])
+        if (meta) meta.setAttribute('content', isDark ? '#1e1c1a' : '#ede9e1')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    }, [darkMode])
 
     useEffect(() => {
         if (!menuOpen) {
             const id = pendingScrollRef.current
             if (!id) return
             pendingScrollRef.current = null
-            requestAnimationFrame(() => {
+            // Cleanup has already restored scroll to the pre-open position.
+            // Wait for the drawer close animation (300ms) before smooth-scrolling
+            // so the scroll starts from the correct position, not from 0.
+            setTimeout(() => {
                 if (id === 'home') {
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                 } else {
                     const section = document.getElementById(id)
                     if (section) section.scrollIntoView({ behavior: 'smooth' })
                 }
-            })
+            }, 50)
             return
         }
         const scrollY = window.scrollY
@@ -194,6 +243,9 @@ function Navbar() {
             document.body.style.position = ''
             document.body.style.top = ''
             document.body.style.width = ''
+            // Force a synchronous reflow so iOS Safari recalculates document
+            // height before scrollTo, ensuring the restoration actually lands.
+            void document.body.offsetTop
             window.scrollTo(0, scrollY)
         }
     }, [menuOpen])
@@ -313,10 +365,18 @@ function Navbar() {
                 document.body
             )}
 
-            <nav className={`topnav-drawer${menuOpen ? ' open' : ''}`}>
-                <ul>
+            <nav className={`topnav-drawer${menuOpen ? ' open' : ''}`} ref={drawerNavRef}>
+                <div
+                    className="drawer-pill"
+                    style={{ top: drawerPill.top, height: drawerPill.height, opacity: drawerPill.opacity }}
+                />
+                <ul onMouseLeave={onDrawerLeave}>
                     {sections.map(({ id, label }) => (
-                        <li key={id}>
+                        <li
+                            key={id}
+                            ref={el => { drawerLiRefs.current[id] = el }}
+                            onMouseEnter={() => onDrawerEnter(id)}
+                        >
                             <a
                                 href={`#${id}`}
                                 className={activeSection === id ? 'active' : ''}

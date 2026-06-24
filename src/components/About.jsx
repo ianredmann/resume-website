@@ -192,11 +192,17 @@ function About() {
             <div className="hero-content">
                 <div className="hero-text">
                     <h1>Hi, I'm Ian Redman</h1>
-                    <blockquote className="about-quote">
-                        {quoteText}
-                        {!quoteDone && <span className="type-cursor">|</span>}
-                        {quoteDone && <cite className="about-quote-attr cite-fade">— Piet Hein</cite>}
-                    </blockquote>
+                    <div className="about-quote-wrapper">
+                        <blockquote className="about-quote about-quote-spacer" aria-hidden="true">
+                            {QUOTE_TEXT}
+                            <cite className="about-quote-attr">— Piet Hein</cite>
+                        </blockquote>
+                        <blockquote className="about-quote about-quote-overlay">
+                            {quoteText}
+                            {!quoteDone && <span className="type-cursor">|</span>}
+                            {quoteDone && <cite className="about-quote-attr cite-fade">— Piet Hein</cite>}
+                        </blockquote>
+                    </div>
                     <p className={`hero-bio${bioVisible ? ' hero-bio-visible' : ''}`}>
                         As an unemployed new grad and retired swimmer (and deplorable chess player), this is my personal mantra.
                     </p>
