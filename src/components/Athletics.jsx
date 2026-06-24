@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { countUp } from '../utils/countUp'
 import photoBW from '../assets/photo-swim-bw.avif'
 import photoSwim from '../assets/photo-swimming.avif'
 import photoBlock from '../assets/photo-block.avif'
@@ -8,10 +9,10 @@ import champ2025Logo from '../assets/champ-2025-ncaa-dii.avif'
 import champ2026Logo from '../assets/champ-2026-ncaa-dii.png'
 
 const stats = [
-    { value: '×2', label: 'All-American', area: 'stat-aa', delay: '0.45s' },
-    { value: '×2', label: 'First Team All-Conference', area: 'stat-1ac', delay: '0.30s' },
-    { value: '×1', label: 'Second Team All-Conference', area: 'stat-2ac', delay: '0.35s' },
-    { value: '×2', label: 'Academic All-District', area: 'stat-acd', delay: '0.40s' },
+    { num: 2, prefix: '×', label: 'All-American', area: 'stat-aa', delay: '0.45s' },
+    { num: 2, prefix: '×', label: 'First Team All-Conference', area: 'stat-1ac', delay: '0.30s' },
+    { num: 1, prefix: '×', label: 'Second Team All-Conference', area: 'stat-2ac', delay: '0.35s' },
+    { num: 2, prefix: '×', label: 'Academic All-District', area: 'stat-acd', delay: '0.40s' },
 ]
 
 const championships = [
@@ -34,6 +35,7 @@ const championships = [
 function Athletics() {
     const bentoRef = useRef(null)
     const [visible, setVisible] = useState(false)
+    const [counts, setCounts] = useState(stats.map(() => 0))
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -41,6 +43,20 @@ function Athletics() {
                 if (entry.isIntersecting) {
                     setVisible(true)
                     observer.disconnect()
+                    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                    if (prefersReduced) {
+                        setCounts(stats.map(s => s.num))
+                    } else {
+                        stats.forEach((s, i) => {
+                            setTimeout(() => {
+                                countUp(
+                                    v => setCounts(prev => prev.map((c, idx) => idx === i ? v : c)),
+                                    s.num,
+                                    800
+                                )
+                            }, 600)
+                        })
+                    }
                 }
             },
             { threshold: 0.1 }
@@ -60,9 +76,9 @@ function Athletics() {
                     <img src={photoBW} alt="Ian Redman in swim cap" />
                 </div>
 
-                {stats.map(({ value, label, area, delay }) => (
+                {stats.map(({ prefix, label, area, delay }, i) => (
                     <div key={label} className="card bento-stat ath-cell" style={{ gridArea: area, animationDelay: delay }}>
-                        <span className="honor-value">{value}</span>
+                        <span className="honor-value">{prefix}{counts[i]}</span>
                         <span className="honor-label">{label}</span>
                     </div>
                 ))}

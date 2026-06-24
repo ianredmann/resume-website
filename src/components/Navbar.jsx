@@ -8,9 +8,9 @@ const GITHUB_HREF = 'https://github.com/ianredmann'
 const sections = [
     { id: 'home', label: 'Home' },
     { id: 'education', label: 'Education' },
-    { id: 'athletics', label: 'Athletics' },
     { id: 'projects', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
+    { id: 'athletics', label: 'Athletics' },
     { id: 'skills', label: 'Skills' },
     { id: 'contact', label: 'Contact' },
 ]

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import obuLogo from '../assets/obu-tiger-logo.png'
+import obuLogo from '../assets/ouachita-baptist.svg'
 import ajLogo from '../assets/aj-fitness-logo.png'
 import compassLogo from '../assets/compass-group-logo.png'
 

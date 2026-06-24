@@ -39,9 +39,9 @@ function App(){
       <main className='content'>
         <About />
         <Education />
-        <Athletics />
         <Projects />
         <Experience />
+        <Athletics />
         <Skills />
         <Contact />
       </main>

@@ -9,8 +9,8 @@ const FIRST_LINE_END = QUOTE_TEXT.indexOf('\n')
 
 function quoteDelay(i) {
     if (i < FIRST_LINE_END) return 12
-    if (QUOTE_TEXT[i] === '\n') return 220
-    return 42
+    if (QUOTE_TEXT[i] === '\n') return 160
+    return 25
 }
 
 function useTypewriter(text, getDelay, startDelay = 0) {
@@ -206,6 +206,22 @@ function About() {
                     <p className={`hero-bio${bioVisible ? ' hero-bio-visible' : ''}`}>
                         As an unemployed new grad and retired swimmer (and deplorable chess player), this is my personal mantra.
                     </p>
+                    <div className={`hero-cta${bioVisible ? ' hero-bio-visible' : ''}`}>
+                        <a
+                            href="#projects"
+                            className="hero-cta-btn hero-cta-btn--primary"
+                            onClick={(e) => { e.preventDefault(); document.getElementById('projects').scrollIntoView({ behavior: 'smooth' }) }}
+                        >
+                            See my work
+                        </a>
+                        <a
+                            href="#contact"
+                            className="hero-cta-btn"
+                            onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) }}
+                        >
+                            Get in touch
+                        </a>
+                    </div>
                 </div>
                 <img src={photo} alt="Ian Redman" className="hero-photo" />
             </div>

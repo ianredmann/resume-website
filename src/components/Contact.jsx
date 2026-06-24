@@ -1,4 +1,60 @@
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+
+const PDF_URL = `${import.meta.env.BASE_URL}/_Ian_Redman_Resume.pdf`
+
+function ResumeModal({ onClose }) {
+    useEffect(() => {
+        const onKey = e => { if (e.key === 'Escape') onClose() }
+        document.addEventListener('keydown', onKey)
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.removeEventListener('keydown', onKey)
+            document.body.style.overflow = ''
+        }
+    }, [onClose])
+
+    return createPortal(
+        <div className="resume-modal-backdrop" onMouseDown={onClose}>
+            <div className="resume-modal" onMouseDown={e => e.stopPropagation()}>
+
+                <div className="resume-modal-header">
+                    <div>
+                        <p className="resume-modal-title">Resume Preview</p>
+                        <p className="resume-modal-subtitle">Ian Redman — Full Stack Developer &amp; Data Analyst</p>
+                    </div>
+                    <button className="topnav-icon-btn" onClick={onClose} aria-label="Close preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div className="resume-modal-body">
+                    <iframe src={PDF_URL} title="Ian Redman Resume">
+                        <p>PDF preview not available. <a href={PDF_URL} download>Download instead.</a></p>
+                    </iframe>
+                </div>
+
+                <div className="resume-modal-footer">
+                    <button className="resume-modal-close-btn" onClick={onClose}>Close</button>
+                    <a href={PDF_URL} download className="contact-link resume-modal-download">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                        Download PDF
+                    </a>
+                </div>
+
+            </div>
+        </div>,
+        document.body
+    )
+}
+
 function Contact() {
+    const [resumeOpen, setResumeOpen] = useState(false)
+
     return (
         <section id="contact">
             <h2>Contact</h2>
@@ -28,7 +84,14 @@ function Contact() {
                     </svg>
                     Play me
                 </a>
+                <button className="contact-link" onClick={() => setResumeOpen(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zm-1 5h-2v-1h2v1zm0-3H8v-1h4v1zm2 6H8v-1h6v1zm2-3H8v-1h8v1z"/>
+                    </svg>
+                    Resume
+                </button>
             </div>
+            {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
         </section>
     )
 }

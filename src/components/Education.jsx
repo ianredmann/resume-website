@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import seal from '../assets/Ouachita_Baptist_University_seal_2025.png'
 import ShinyText from './ShinyText'
+import { countUp } from '../utils/countUp'
 
 function WaveText({ text, startDelay = 0 }) {
     return (
@@ -18,25 +19,15 @@ function WaveText({ text, startDelay = 0 }) {
     )
 }
 
-function countUp(setter, target, duration, isDecimal = false) {
-    const start = performance.now()
-    function step(now) {
-        const progress = Math.min((now - start) / duration, 1)
-        const eased = 1 - Math.pow(1 - progress, 3)
-        const value = eased * target
-        setter(isDecimal ? value.toFixed(1) : Math.floor(value))
-        if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-}
-
 function Education() {
     const diplomaRef = useRef(null)
     const statsRef = useRef(null)
     const [diplomaVisible, setDiplomaVisible] = useState(false)
     const [statsVisible, setStatsVisible] = useState(false)
     const [statsAnimated, setStatsAnimated] = useState(false)
-    const [hovered, setHovered] = useState(null)
+    const [hoveredTerm, setHoveredTerm] = useState(null)
+    const [hoveredStat, setHoveredStat] = useState(null)
+    const [tappedStat, setTappedStat] = useState(null)
     const [gpa, setGpa] = useState('0.0')
     const [pres, setPres] = useState(0)
     const [dean, setDean] = useState(0)
@@ -83,12 +74,27 @@ function Education() {
         }
     }, [])
 
+    useEffect(() => {
+        const handler = e => {
+            if (!statsRef.current?.contains(e.target)) setTappedStat(null)
+        }
+        document.addEventListener('mousedown', handler)
+        return () => document.removeEventListener('mousedown', handler)
+    }, [])
+
     const glowMap = {
         magna: ['gpa', 'pres', 'dean'],
         math: ['kme'],
         cs: ['cs-award'],
     }
-    const glowing = hovered ? (glowMap[hovered] ?? []) : []
+    const reverseMap = {
+        gpa: 'magna', pres: 'magna', dean: 'magna',
+        kme: 'math',
+        'cs-award': 'cs',
+    }
+    const activeStat = hoveredStat ?? tappedStat
+    const activeTerm = hoveredTerm ?? (activeStat ? reverseMap[activeStat] : null)
+    const glowing = activeTerm ? (glowMap[activeTerm] ?? []) : []
 
     const statItems = [
         { id: 'gpa', display: gpa, label: 'GPA' },
@@ -130,16 +136,16 @@ function Education() {
 
                 <div className="diploma-degrees diploma-el" style={{ transitionDelay: '0.75s' }}>
                     <span
-                        className={`diploma-degree${hovered === 'cs' ? ' diploma-term-active' : ''}`}
-                        onMouseEnter={() => setHovered('cs')}
-                        onMouseLeave={() => setHovered(null)}
+                        className={`diploma-degree${activeTerm === 'cs' ? ' diploma-term-active' : ''}`}
+                        onMouseEnter={() => setHoveredTerm('cs')}
+                        onMouseLeave={() => setHoveredTerm(null)}
                     >
                         <WaveText text="Bachelor of Science in Computer Science" startDelay={1.5} />
                     </span>
                     <span
-                        className={`diploma-degree${hovered === 'math' ? ' diploma-term-active' : ''}`}
-                        onMouseEnter={() => setHovered('math')}
-                        onMouseLeave={() => setHovered(null)}
+                        className={`diploma-degree${activeTerm === 'math' ? ' diploma-term-active' : ''}`}
+                        onMouseEnter={() => setHoveredTerm('math')}
+                        onMouseLeave={() => setHoveredTerm(null)}
                     >
                         <WaveText text="Bachelor of Science in Mathematics" startDelay={2.1} />
                     </span>
@@ -147,9 +153,9 @@ function Education() {
 
                 <div className="diploma-footer diploma-el" style={{ transitionDelay: '0.9s' }}>
                     <span
-                        className={`diploma-honors-text${hovered === 'magna' ? ' diploma-term-active' : ''}`}
-                        onMouseEnter={() => setHovered('magna')}
-                        onMouseLeave={() => setHovered(null)}
+                        className={`diploma-honors-text${activeTerm === 'magna' ? ' diploma-term-active' : ''}`}
+                        onMouseEnter={() => setHoveredTerm('magna')}
+                        onMouseLeave={() => setHoveredTerm(null)}
                     >
                         <ShinyText text="Magna Cum Laude" />
                     </span>
@@ -169,6 +175,12 @@ function Education() {
                             glowing.includes(id) ? 'edu-stat-glow' : '',
                         ].filter(Boolean).join(' ')}
                         style={!statsAnimated ? { transitionDelay: `${delays[i]}s` } : undefined}
+                        onMouseEnter={() => setHoveredStat(id)}
+                        onMouseLeave={() => setHoveredStat(null)}
+                        onClick={() => setTappedStat(prev => prev === id ? null : id)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={label}
                     >
                         {isIcon ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="honor-icon">

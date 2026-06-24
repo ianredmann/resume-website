@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import jsIcon       from '../assets/skills/javascript.svg'
 import pyIcon       from '../assets/skills/python.svg'
 import javaIcon     from '../assets/skills/java.svg'
@@ -14,6 +15,25 @@ import gitIcon      from '../assets/skills/git.svg'
 import flagGb       from '../assets/skills/flag-gb.svg'
 import flagEs       from '../assets/skills/flag-es.svg'
 import LogoLoop     from './LogoLoop'
+
+function LogoItem({ item }) {
+    const [tapped, setTapped] = useState(false)
+    const isNode = 'node' in item
+    const label = item.label ?? (isNode ? item.ariaLabel : item.alt)
+    return (
+        <div
+            className="logo-tip-wrap"
+            onClick={() => setTapped(t => !t)}
+            onMouseLeave={() => setTapped(false)}
+        >
+            {isNode
+                ? <span className="logoloop__node">{item.node}</span>
+                : <img src={item.src} alt={item.alt ?? ''} loading="lazy" decoding="async" draggable={false} />
+            }
+            <span className={`logo-tip${tapped ? ' logo-tip--on' : ''}`}>{label}</span>
+        </div>
+    )
+}
 
 function AssemblyIcon() {
     return (
@@ -44,9 +64,9 @@ const webAndToolsLogos = [
     { src: gitIcon,      alt: 'Git' },
 ]
 
-const spokenLanguages = [
-    { name: 'English', level: 'Fluent', flag: flagGb },
-    { name: 'Spanish', level: 'Fluent', flag: flagEs },
+const spokenLanguageLogos = [
+    { src: flagGb, alt: 'English flag', label: 'English · Fluent' },
+    { src: flagEs, alt: 'Spanish flag', label: 'Spanish · Fluent' },
 ]
 
 function Skills() {
@@ -66,6 +86,7 @@ function Skills() {
                     fadeOut
                     fadeOutColor="var(--color-card-bg)"
                     ariaLabel="Programming languages"
+                    renderItem={(item) => <LogoItem item={item} />}
                 />
             </div>
 
@@ -81,22 +102,25 @@ function Skills() {
                     fadeOut
                     fadeOutColor="var(--color-card-bg)"
                     ariaLabel="Web and tools"
+                    renderItem={(item) => <LogoItem item={item} />}
                 />
             </div>
 
-            <div className="card">
+            <div className="card ticker-section">
                 <p className="ticker-category">Spoken Languages</p>
-                <div className="skills-languages">
-                    {spokenLanguages.map(({ name, level, flag }) => (
-                        <div className="language-item" key={name}>
-                            <img src={flag} alt={`${name} flag`} className="flag-icon" />
-                            <div className="language-text">
-                                <span className="language-name">{name}</span>
-                                <span className="language-level">{level}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <LogoLoop
+                    logos={spokenLanguageLogos}
+                    speed={55}
+                    logoHeight={26}
+                    gap={100}
+                    pauseOnHover
+                    scaleOnHover
+                    fadeOut
+                    fadeOutColor="var(--color-card-bg)"
+                    ariaLabel="Spoken languages"
+                    className="spoken-lang"
+                    renderItem={(item) => <LogoItem item={item} />}
+                />
             </div>
         </section>
     )

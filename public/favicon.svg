@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#ddd8ce"/>
+  <style>
+    .bg { fill: #1e1c1a; }
+    .fg { fill: #e8e4dc; }
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #ddd8ce; }
+      .fg { fill: #808080; }
+    }
+  </style>
+  <rect width="32" height="32" rx="6" class="bg"/>
   <text
     x="16"
     y="22"
@@ -7,6 +15,6 @@
     font-family="Georgia, serif"
     font-size="16"
     font-weight="700"
-    fill="#808080"
+    class="fg"
   >IR</text>
 </svg>
