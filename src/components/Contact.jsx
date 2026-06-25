@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
-const PDF_URL = `${import.meta.env.BASE_URL}/_Ian_Redman_Resume.pdf`
+const PDF_URL = `${import.meta.env.BASE_URL}_Ian_Redman_Resume.pdf`
 
 function ResumeModal({ onClose }) {
     useEffect(() => {
