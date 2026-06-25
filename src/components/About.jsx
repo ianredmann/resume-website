@@ -204,7 +204,7 @@ function About() {
                         </blockquote>
                     </div>
                     <p className={`hero-bio${bioVisible ? ' hero-bio-visible' : ''}`}>
-                        As an unemployed new grad and retired swimmer (and deplorable chess player), this is my personal mantra.
+                        As a new grad and retired swimmer (and deplorable chess player), this is my personal mantra.
                     </p>
                     <div className={`hero-cta${bioVisible ? ' hero-bio-visible' : ''}`}>
                         <a

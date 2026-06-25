@@ -1,20 +1,33 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Fragment } from 'react'
 import seal from '../assets/Ouachita_Baptist_University_seal_2025.png'
 import ShinyText from './ShinyText'
 import { countUp } from '../utils/countUp'
 
 function WaveText({ text, startDelay = 0 }) {
+    const words = text.split(' ')
+    let charOffset = 0
     return (
         <>
-            {text.split('').map((char, i) => (
-                <span
-                    key={i}
-                    className="wave-char"
-                    style={{ animationDelay: `${startDelay + i * 0.04}s` }}
-                >
-                    {char === ' ' ? ' ' : char}
-                </span>
-            ))}
+            {words.map((word, wi) => {
+                const wordStart = charOffset
+                charOffset += word.length + 1
+                return (
+                    <Fragment key={wi}>
+                        <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                            {word.split('').map((char, ci) => (
+                                <span
+                                    key={ci}
+                                    className="wave-char"
+                                    style={{ animationDelay: `${startDelay + (wordStart + ci) * 0.04}s` }}
+                                >
+                                    {char}
+                                </span>
+                            ))}
+                        </span>
+                        {wi < words.length - 1 && ' '}
+                    </Fragment>
+                )
+            })}
         </>
     )
 }
