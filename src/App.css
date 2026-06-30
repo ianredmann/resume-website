@@ -182,6 +182,7 @@ section h2 {
 
 .hero-tag-btn {
   cursor: pointer;
+  user-select: none;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -862,7 +863,7 @@ button.contact-link {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
 }
 
@@ -870,6 +871,7 @@ button.contact-link {
   perspective: 1200px;
   height: 460px;
   cursor: pointer;
+  user-select: none;
 }
 
 .project-card-inner {
@@ -903,6 +905,11 @@ button.contact-link {
   transform: rotateY(180deg);
   gap: 0.75rem;
   overflow-y: auto;
+  pointer-events: none;
+}
+
+.project-card-wrapper.flipped .project-card-back {
+  pointer-events: auto;
 }
 
 .project-category {
@@ -969,8 +976,12 @@ button.contact-link {
 
 .project-bullets {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding-left: 1.1rem;
+}
+
+.project-card-wrapper.flipped .project-bullets {
+  overflow-y: auto;
 }
 
 .project-bullets li {
@@ -1392,6 +1403,7 @@ body.dark-mode .topnav-drawer {
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   transition: background-color 0.2s ease;
+  user-select: none;
 }
 
 .diploma-degree:hover,
@@ -1435,6 +1447,7 @@ body.dark-mode .topnav-drawer {
   display: inline-block;
   position: relative;
   transition: background-color 0.2s ease;
+  user-select: none;
 }
 
 .diploma-honors-text:hover,
@@ -1476,6 +1489,7 @@ body.dark-mode .topnav-drawer {
   transform: translateY(16px);
   transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   cursor: pointer;
+  user-select: none;
 }
 
 .edu-stat.edu-stat-visible {

@@ -5,15 +5,36 @@ import compassLogo from '../assets/compass-group-logo.png'
 
 const experiences = [
     {
-        role: 'Club Team Captain',
-        employer: 'AJ Fitness Swim Team',
-        location: 'Tegucigalpa, Honduras',
-        date: 'July 2021 – August 2022',
-        logo: ajLogo,
+        role: 'Bioinformatics Hackathon Mentor',
+        employer: 'Ouachita Baptist University',
+        location: 'Arkadelphia, Arkansas',
+        date: 'April 2026',
+        logo: obuLogo,
         bullets: [
-            'Captained a 40-person team of swimmers aged 10–18, serving as the first point of contact for resolving conflicts and setting the standard for punctuality and effort during training.',
-            'Led pre-race speeches and team cheers to maintain morale and competitive focus during meets.',
-            'Served as captain during the team\'s rise from 4th to 2nd place at the national championship.',
+            'Guided 10 high school students through a full-day hands-on session in phage gene annotation, teaching the use of PECAAN, Glimmer, GeneMark, and associated functional databases.',
+            'Adapted graduate-level bioinformatics workflows for a non-expert audience; student annotations were submitted for potential inclusion in peer-reviewed research following faculty review.',
+        ],
+    },
+    {
+        role: 'Front of House Team Member',
+        employer: 'Compass Group',
+        location: 'Oxford, United Kingdom',
+        date: 'June 2025 – August 2025',
+        logo: compassLogo,
+        bullets: [
+            'Executed events of varying scale across multiple Oxford University college venues — from gatherings of around 100 to large formal events exceeding 400 guests — covering full setup, service, and breakdown.',
+            'Took on bar operations at select events, managing drink service alongside broader front-of-house responsibilities in a high-volume, time-sensitive environment.',
+        ],
+    },
+    {
+        role: 'Library Archivist',
+        employer: 'Ouachita Baptist University',
+        location: 'Arkadelphia, Arkansas',
+        date: 'May 2024 – August 2024',
+        logo: obuLogo,
+        bullets: [
+            'Organized and preserved physical documents, photographs, and miscellaneous archival materials under the direction of the head archivist.',
+            'Digitized selected materials for online publication, ensuring records were accurately cataloged and accessible in the university\'s digital archive.',
         ],
     },
     {
@@ -29,36 +50,15 @@ const experiences = [
         ],
     },
     {
-        role: 'Library Archivist',
-        employer: 'Ouachita Baptist University',
-        location: 'Arkadelphia, Arkansas',
-        date: 'May 2024 – August 2024',
-        logo: obuLogo,
+        role: 'Club Team Captain',
+        employer: 'AJ Fitness Swim Team',
+        location: 'Tegucigalpa, Honduras',
+        date: 'July 2021 – August 2022',
+        logo: ajLogo,
         bullets: [
-            'Organized and preserved physical documents, photographs, and miscellaneous archival materials under the direction of the head archivist.',
-            'Digitized selected materials for online publication, ensuring records were accurately cataloged and accessible in the university\'s digital archive.',
-        ],
-    },
-    {
-        role: 'Front of House Team Member',
-        employer: 'Compass Group',
-        location: 'Oxford, United Kingdom',
-        date: 'June 2025 – August 2025',
-        logo: compassLogo,
-        bullets: [
-            'Executed events of varying scale across multiple Oxford University college venues — from gatherings of around 100 to large formal events exceeding 400 guests — covering full setup, service, and breakdown.',
-            'Took on bar operations at select events, managing drink service alongside broader front-of-house responsibilities in a high-volume, time-sensitive environment.',
-        ],
-    },
-    {
-        role: 'Bioinformatics Hackathon Mentor',
-        employer: 'Ouachita Baptist University',
-        location: 'Arkadelphia, Arkansas',
-        date: 'April 2026',
-        logo: obuLogo,
-        bullets: [
-            'Guided 10 high school students through a full-day hands-on session in phage gene annotation, teaching the use of PECAAN, Glimmer, GeneMark, and associated functional databases.',
-            'Adapted graduate-level bioinformatics workflows for a non-expert audience; student annotations were submitted for potential inclusion in peer-reviewed research following faculty review.',
+            'Captained a 40-person team of swimmers aged 10–18, serving as the first point of contact for resolving conflicts and setting the standard for punctuality and effort during training.',
+            'Led pre-race speeches and team cheers to maintain morale and competitive focus during meets.',
+            'Served as captain during the team\'s rise from 4th to 2nd place at the national championship.',
         ],
     },
 ]

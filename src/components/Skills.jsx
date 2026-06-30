@@ -11,7 +11,8 @@ import css3Icon     from '../assets/skills/css3.svg'
 import tailwindIcon from '../assets/skills/tailwind.svg'
 import nodejsIcon   from '../assets/skills/nodejs.svg'
 import sqliteIcon   from '../assets/skills/sqlite.svg'
-import gitIcon      from '../assets/skills/git.svg'
+import gitIcon        from '../assets/skills/git.svg'
+import playwrightIcon from '../assets/skills/icon.png'
 import flagGb       from '../assets/skills/flag-gb.svg'
 import flagEs       from '../assets/skills/flag-es.svg'
 import LogoLoop     from './LogoLoop'
@@ -61,7 +62,8 @@ const webAndToolsLogos = [
     { src: tailwindIcon, alt: 'Tailwind' },
     { src: nodejsIcon,   alt: 'Node.js' },
     { src: sqliteIcon,   alt: 'SQLite' },
-    { src: gitIcon,      alt: 'Git' },
+    { src: gitIcon,        alt: 'Git' },
+    { src: playwrightIcon, alt: 'Playwright' },
 ]
 
 const spokenLanguageLogos = [
