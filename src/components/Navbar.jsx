@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import GlassSurface from './GlassSurface'
 
-const LINKEDIN_HREF = 'https://linkedin.com/in/ian-redman-1288b4263/'
+const LINKEDIN_HREF = 'https://www.linkedin.com/in/ianredmann/'
 const GITHUB_HREF = 'https://github.com/ianredmann'
 
 const sections = [

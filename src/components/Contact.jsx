@@ -72,7 +72,7 @@ function Contact() {
                     </svg>
                     GitHub
                 </a>
-                <a href="https://www.linkedin.com/in/ian-redman-1288b4263/" target="_blank" rel="noreferrer" className="contact-link">
+                <a href="https://www.linkedin.com/in/ianredmann/" target="_blank" rel="noreferrer" className="contact-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20.447 20.452H17.21v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.987V9h3.102v1.561h.046c.431-.817 1.484-1.678 3.054-1.678 3.268 0 3.868 2.151 3.868 4.948v6.621zM5.337 7.433a1.8 1.8 0 1 1 0-3.601 1.8 1.8 0 0 1 0 3.601zm1.554 13.019H3.783V9h3.108v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                     </svg>
