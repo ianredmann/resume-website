@@ -20,6 +20,7 @@ const projects = [
         title: 'WTI Crude Oil Geopolitical Risk Analysis',
         date: 'April 2026',
         stat: { num: 33.4, prefix: '+', suffix: '%', decimal: true, duration: 1500, label: 'avg 30-day return during military escalation' },
+        github: 'https://github.com/ianredmann/wti-crude-oil-geopolitical-risk-analysis',
         tags: ['Statistical Data Analysis', 'Excel'],
         bullets: [
             'Collected and categorized ~400 daily WTI crude oil price observations (Oct 2024 – April 2026) across four geopolitical regimes: de-escalation, policy uncertainty, geopolitical tension, and military escalation.',
