@@ -5,6 +5,15 @@ import GlassSurface from './GlassSurface'
 const LINKEDIN_HREF = 'https://www.linkedin.com/in/ianredmann/'
 const GITHUB_HREF = 'https://github.com/ianredmann'
 
+// In-app browsers (LinkedIn, Instagram, Facebook, etc.) render pages in a
+// stripped-down WKWebView that silently fails to paint backdrop-filter,
+// leaving the glass navbar fully transparent. Detect them via UA token and
+// fall back to a solid background instead — everything else is unaffected.
+const isInAppBrowser = () => {
+    if (typeof navigator === 'undefined') return false
+    return /LinkedInApp|FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Snapchat|BytedanceWebview/i.test(navigator.userAgent)
+}
+
 const sections = [
     { id: 'home', label: 'Home' },
     { id: 'education', label: 'Education' },
@@ -55,6 +64,7 @@ function Navbar() {
     const hoveringRef = useRef(false)
     const menuOpenRef = useRef(false)
     const [pill, setPill] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 })
+    const [inAppBrowser] = useState(isInAppBrowser)
     const drawerNavRef = useRef(null)
     const drawerLiRefs = useRef({})
     const drawerHoveringRef = useRef(false)
@@ -266,7 +276,7 @@ function Navbar() {
     }
 
     return (
-        <header className="topnav">
+        <header className={`topnav${inAppBrowser ? ' in-app-browser' : ''}`}>
             <GlassSurface
                 width="100%"
                 height="100%"

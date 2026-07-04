@@ -1105,6 +1105,19 @@ button.contact-link {
   height: 100%;
 }
 
+/* In-app browsers silently fail to render backdrop-filter, leaving the
+   navbar fully transparent — fall back to a solid, blur-independent
+   background there instead (see Navbar.jsx isInAppBrowser). */
+.topnav.in-app-browser .glass-surface {
+  background: rgba(237, 233, 225, 0.92);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.dark-mode .topnav.in-app-browser .glass-surface {
+  background: rgba(30, 28, 26, 0.92);
+}
+
 .topnav .glass-surface__content {
   padding: 0;
   flex-direction: column;
