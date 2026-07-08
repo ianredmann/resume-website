@@ -10,9 +10,9 @@ const projects = [
         github: 'https://github.com/ianredmann/d2_swim_program_progression_analysis?tab=readme-ov-file',
         tags: ['Python', 'SQLite', 'Playwright', 'osascript'],
         bullets: [
-            'Built a four-stage Python pipeline — roster scraping, times collection, power point scoring, and progression aggregation — engineering a three-tier scraping approach (requests → Playwright with persistent Firefox → osascript via Safari) as each method was blocked by successive Cloudflare protections including Turnstile.',
-            'Defined a progression metric using top-five average SCY power points to normalize across heterogeneous event portfolios; stored results in a normalized SQLite schema with idempotent INSERT OR IGNORE inserts and aggregated by team, gender, and cohort.',
-            'Analyzed ~127 swimmers across four D-II programs and four entering classes (2019–2022); OBU Men posted the highest 3+ year mean (+17.5 pts, n=27), with results presented as a proof of concept validating the methodology for a future full-division study.',
+            'Built a four stage Python pipeline that included roster scraping, times collection, power point scoring, and progression aggregation, engineering a three tier scraping approach (requests → Playwright with persistent Firefox → osascript via Safari) as each method was blocked by successive Cloudflare protections including Turnstile.',
+            'Defined a progression metric using top five average SCY power points to normalize across heterogeneous event portfolios. Stored results in a normalized SQLite schema with idempotent INSERT OR IGNORE inserts and aggregated by team, gender, and cohort.',
+            'Analyzed ~127 swimmers across four D-II programs and four entering classes (2019–2022), where OBU Men posted the highest 3+ year mean (+17.5 pts, n=27), with results presented as a proof of concept validating the methodology for a future full division study.',
         ],
     },
     {
@@ -37,9 +37,9 @@ const projects = [
         tags: ['JavaScript', 'HTML5', 'CSS3', 'SQLite', 'Node.js'],
         bullets: [
             'Inherited and refactored a monolithic codebase from a prior capstone group, decomposing a single-file route handler into three purpose-built modules (admin, faculty, student) to improve maintainability and separation of concerns.',
-            'Designed and implemented the admin dashboard from scratch — the only role not completed by the prior team — including its data views, workflows, and all associated UI.',
-            'Implemented a unique-link access system using generated URL tokens to authenticate and route users to their role-specific views, eliminating the need for a traditional login flow.',
-            'Redesigned the UI from zero — the inherited project had no CSS; implemented a complete visual layer across all three user-facing screens.',
+            'Designed and implemented the admin dashboard from scratch, which was the only role not completed by the prior team, including its data views, workflows, and all associated UI.',
+            'Implemented a unique link access system using generated URL tokens to authenticate and route users to their role specific views, eliminating the need for a traditional login flow.',
+            'Redesigned the UI from zero. The inherited project had no CSS, and a complete visual layer across all three user-facing screens was implemented.',
         ],
     },
     {

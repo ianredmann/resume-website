@@ -11,8 +11,8 @@ const experiences = [
         date: 'April 2026',
         logo: obuLogo,
         bullets: [
-            'Guided 10 high school students through a full-day hands-on session in phage gene annotation, teaching the use of PECAAN, Glimmer, GeneMark, and associated functional databases.',
-            'Adapted graduate-level bioinformatics workflows for a non-expert audience; student annotations were submitted for potential inclusion in peer-reviewed research following faculty review.',
+            'Guided 10 high school students through a full day hands-on session in phage gene annotation, teaching the use of PECAAN, Glimmer, GeneMark, and associated functional databases.',
+            'Adapted graduate level bioinformatics workflows for a non-expert audience; student annotations were submitted for potential inclusion in peer-reviewed research following faculty review.',
         ],
     },
     {
@@ -22,8 +22,8 @@ const experiences = [
         date: 'June 2025 – August 2025',
         logo: compassLogo,
         bullets: [
-            'Executed events of varying scale across multiple Oxford University college venues — from gatherings of around 100 to large formal events exceeding 400 guests — covering full setup, service, and breakdown.',
-            'Took on bar operations at select events, managing drink service alongside broader front-of-house responsibilities in a high-volume, time-sensitive environment.',
+            'Executed events of varying scale across multiple Oxford University college venues, from gatherings of around 100 to large formal events exceeding 400 guests, covering full setup, service, and breakdown.',
+            'Took on bar operations at select events, managing drink service alongside broader front of house responsibilities in a high volume, time sensitive environment.',
         ],
     },
     {
@@ -44,9 +44,9 @@ const experiences = [
         date: 'August 2023 – May 2025',
         logo: obuLogo,
         bullets: [
-            'Supported 47 freshman residents through their first-year transition before moving to an upperclassmen building — adapting from a social integration focus to a community-standards and conflict-resolution role.',
-            'Coordinated Open Dorm periods, handled after-hours noise complaints, and maintained regular resident engagement logs for the Resident Life department.',
-            'Co-organized an annual haunted house event across the residential building, coordinating room setups with residents and managing live check-in and wait-time communication for 100+ participants.',
+            'Supported 47 freshman residents through their first year transition before moving to an upperclassmen building, adapting from a social integration focus to a community standards and conflict resolution role.',
+            'Coordinated Open Dorm periods, handled after hours noise complaints, and maintained regular resident engagement logs for the Resident Life department.',
+            'Co-organized an annual haunted house event across the residential building, coordinating room setups with residents and managing live check in and wait time communication for 100+ participants.',
         ],
     },
     {
