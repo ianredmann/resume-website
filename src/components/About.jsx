@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import photo from '../assets/photo-about.avif'
+import photo from '../assets/photo-about-2.avif'
 
 const IAN_LAT = 29.7604
 const IAN_LNG = -95.3698
@@ -223,7 +223,9 @@ function About() {
                         </a>
                     </div>
                 </div>
-                <img src={photo} alt="Ian Redman" className="hero-photo" />
+                <div className="hero-photo-frame">
+                    <img src={photo} alt="Ian Redman" className="hero-photo" />
+                </div>
             </div>
 
         </section>
