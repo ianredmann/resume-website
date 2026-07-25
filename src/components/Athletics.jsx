@@ -9,10 +9,10 @@ import champ2025Logo from '../assets/champ-2025-ncaa-dii.avif'
 import champ2026Logo from '../assets/champ-2026-ncaa-dii.png'
 
 const stats = [
-    { num: 2, prefix: '×', label: 'All-American', area: 'stat-aa', delay: '0.45s' },
-    { num: 2, prefix: '×', label: 'First Team All-Conference', area: 'stat-1ac', delay: '0.30s' },
-    { num: 1, prefix: '×', label: 'Second Team All-Conference', area: 'stat-2ac', delay: '0.35s' },
-    { num: 2, prefix: '×', label: 'Academic All-District', area: 'stat-acd', delay: '0.40s' },
+    { num: 2, prefix: '×', label: 'All-American', years: '2024–25, 2025–26', area: 'stat-aa', delay: '0.45s' },
+    { num: 2, prefix: '×', label: 'First Team All-Conference', years: '2024–25, 2025–26', area: 'stat-1ac', delay: '0.30s' },
+    { num: 1, prefix: '×', label: 'Second Team All-Conference', years: '2023–24', area: 'stat-2ac', delay: '0.35s' },
+    { num: 2, prefix: '×', label: 'Academic All-District', years: '2024–25, 2025–26', area: 'stat-acd', delay: '0.40s' },
 ]
 
 const championships = [
@@ -36,6 +36,18 @@ function Athletics() {
     const bentoRef = useRef(null)
     const [visible, setVisible] = useState(false)
     const [counts, setCounts] = useState(stats.map(() => 0))
+    const [openStat, setOpenStat] = useState(null)
+    const statRefs = useRef([])
+
+    useEffect(() => {
+        const handler = e => {
+            if (openStat === null) return
+            const el = statRefs.current[openStat]
+            if (el && !el.contains(e.target)) setOpenStat(null)
+        }
+        document.addEventListener('mousedown', handler)
+        return () => document.removeEventListener('mousedown', handler)
+    }, [openStat])
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -74,12 +86,24 @@ function Athletics() {
 
                 <div className="bento-photo ath-cell" style={{ gridArea: 'photo-bw', animationDelay: '0.28s' }}>
                     <img src={photoBW} alt="Ian Redman in swim cap" />
+                    <div className="photo-caption"><span>Battle of the Ravine</span></div>
                 </div>
 
-                {stats.map(({ prefix, label, area, delay }, i) => (
-                    <div key={label} className="card bento-stat ath-cell" style={{ gridArea: area, animationDelay: delay }}>
+                {stats.map(({ prefix, label, years, area, delay }, i) => (
+                    <div
+                        key={label}
+                        ref={el => statRefs.current[i] = el}
+                        className={`card bento-stat ath-cell${openStat === i ? ' stat-open' : ''}`}
+                        style={{ gridArea: area, animationDelay: delay }}
+                        onClick={() => setOpenStat(o => o === i ? null : i)}
+                        role="button"
+                        aria-expanded={openStat === i}
+                    >
                         <span className="honor-value">{prefix}{counts[i]}</span>
                         <span className="honor-label">{label}</span>
+                        {openStat === i && (
+                            <div className="stat-years-popup">{years}</div>
+                        )}
                     </div>
                 ))}
 
@@ -93,10 +117,12 @@ function Athletics() {
 
                 <div className="bento-photo ath-cell" style={{ gridArea: 'photo-sw', animationDelay: '0.52s' }}>
                     <img src={photoSwim} alt="Ian Redman swimming freestyle" style={{ objectPosition: 'center center' }} />
+                    <div className="photo-caption"><span>NCAA Championships</span></div>
                 </div>
 
                 <div className="bento-photo ath-cell" style={{ gridArea: 'photo-blk', animationDelay: '0s' }}>
                     <img src={photoBlock} alt="Ian Redman at the block" />
+                    <div className="photo-caption"><span>Conference Championships</span></div>
                 </div>
 
                 <div className="bento-champs ath-cell" style={{ gridArea: 'champs', animationDelay: '0.18s' }}>

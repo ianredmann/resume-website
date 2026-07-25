@@ -47,43 +47,65 @@ function Education() {
 
     useEffect(() => {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        let diplomaObs = null
+        let statsObs = null
 
-        const diplomaObs = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setDiplomaVisible(true)
-                    diplomaObs.disconnect()
-                }
-            },
-            { threshold: 0.15 }
-        )
-        if (diplomaRef.current) diplomaObs.observe(diplomaRef.current)
+        const revealStats = () => {
+            setStatsVisible(true)
+            if (prefersReduced) {
+                setGpa('3.8')
+                setPres(3)
+                setDean(5)
+                setStatsAnimated(true)
+            } else {
+                countUp(setGpa, 3.8, 2400, true)
+                countUp(setPres, 3, 1800)
+                countUp(setDean, 5, 2200)
+                setTimeout(() => setStatsAnimated(true), 800)
+            }
+        }
 
-        const statsObs = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setStatsVisible(true)
-                    if (prefersReduced) {
-                        setGpa('3.8')
-                        setPres(3)
-                        setDean(5)
-                        setStatsAnimated(true)
-                    } else {
-                        countUp(setGpa, 3.8, 2400, true)
-                        countUp(setPres, 3, 1800)
-                        countUp(setDean, 5, 2200)
-                        setTimeout(() => setStatsAnimated(true), 800)
-                    }
-                    statsObs.disconnect()
-                }
-            },
-            { threshold: 0.2 }
-        )
-        if (statsRef.current) statsObs.observe(statsRef.current)
+        // Content already inside the initial viewport would otherwise fire its
+        // reveal the instant observe() is called, racing the hero's own intro
+        // animation. Wait for the user to actually scroll before observing.
+        const startObserving = () => {
+            if (diplomaRef.current) {
+                diplomaObs = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setDiplomaVisible(true)
+                            diplomaObs.disconnect()
+                        }
+                    },
+                    { threshold: 0.15 }
+                )
+                diplomaObs.observe(diplomaRef.current)
+            }
+
+            if (statsRef.current) {
+                statsObs = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            revealStats()
+                            statsObs.disconnect()
+                        }
+                    },
+                    { threshold: 0.2 }
+                )
+                statsObs.observe(statsRef.current)
+            }
+        }
+
+        if (window.scrollY > 0) {
+            startObserving()
+        } else {
+            window.addEventListener('scroll', startObserving, { once: true, passive: true })
+        }
 
         return () => {
-            diplomaObs.disconnect()
-            statsObs.disconnect()
+            window.removeEventListener('scroll', startObserving)
+            diplomaObs?.disconnect()
+            statsObs?.disconnect()
         }
     }, [])
 
