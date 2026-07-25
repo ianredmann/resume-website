@@ -1797,6 +1797,10 @@ body.dark-mode .edu-stat.edu-stat-glow {
 
 @media (max-width: 768px), (max-height: 500px) and (orientation: landscape) {
 
+  .photo-caption {
+    display: none;
+  }
+
   .mobile-backdrop {
     display: block;
     position: fixed;
