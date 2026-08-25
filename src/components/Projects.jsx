@@ -21,7 +21,7 @@ const projects = [
         date: 'April 2026',
         stat: { num: 33.4, prefix: '+', suffix: '%', decimal: true, duration: 1500, label: 'avg 30-day return during military escalation' },
         github: 'https://github.com/ianredmann/wti-crude-oil-geopolitical-risk-analysis',
-        tags: ['Statistical Data Analysis', 'Excel'],
+        tags: ['Statistical Data Analysis', 'Python', 'Excel'],
         bullets: [
             'Collected and categorized ~400 daily WTI crude oil price observations (Oct 2024 – April 2026) across four geopolitical regimes: de-escalation, policy uncertainty, geopolitical tension, and military escalation.',
             'Built price frequency distribution tables and t-tests in Excel; Military Escalation periods exhibited ~3x daily price volatility (σ = 5.4% vs. 1.8% for Policy Uncertainty), with 61% of days seeing moves >2%, confirmed by a statistically significant Levene variance test (p < 0.0001).',
