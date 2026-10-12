@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Reveal from './Reveal'
+import Collapse, { Chevron } from './Collapse'
 import obuLogo from '../assets/ouachita-baptist.svg'
 import ajLogo from '../assets/aj-fitness-logo.png'
 import compassLogo from '../assets/compass-group-logo.png'
@@ -75,46 +77,32 @@ function Experience() {
                 {experiences.map(({ role, employer, location, date, logo, bullets }, i) => (
                     <div className="timeline-entry" key={role}>
                         <div className="timeline-dot" />
-                        <div
-                            className={`card timeline-card exp-card${openIndex === i ? ' open' : ''}`}
-                            onClick={() => toggle(i)}
-                            role="button"
-                            tabIndex={0}
-                            aria-expanded={openIndex === i}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i) } }}
-                        >
-                            <div className="exp-header">
-                                <img src={logo} alt={employer} className="exp-logo" />
-                                <div className="exp-header-info">
-                                    <div className="card-header">
-                                        <p className="role">{role}</p>
+                        <Reveal className={`card timeline-card exp-card${openIndex === i ? ' open' : ''}`}>
+                            <button
+                                type="button"
+                                className="exp-header"
+                                aria-expanded={openIndex === i}
+                                aria-controls={`exp-detail-${i}`}
+                                onClick={() => toggle(i)}
+                            >
+                                <img src={logo} alt="" className="exp-logo" />
+                                <span className="exp-header-info">
+                                    <span className="card-header">
+                                        <span className="role">{role}</span>
                                         <span className="date">{date}</span>
-                                    </div>
+                                    </span>
                                     <span className="location">{employer} · {location}</span>
-                                </div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className={`exp-chevron${openIndex === i ? ' open' : ''}`}
-                                >
-                                    <polyline points="6 9 12 15 18 9" />
-                                </svg>
-                            </div>
-                            <div className="exp-detail">
+                                </span>
+                                <Chevron open={openIndex === i} />
+                            </button>
+                            <Collapse open={openIndex === i} id={`exp-detail-${i}`}>
                                 <div className="exp-detail-inner">
                                     <ul>
                                         {bullets.map((b, j) => <li key={j}>{b}</li>)}
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                            </Collapse>
+                        </Reveal>
                     </div>
                 ))}
             </div>

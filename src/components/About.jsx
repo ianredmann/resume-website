@@ -4,31 +4,26 @@ import photo from '../assets/photo-about-2.avif'
 const IAN_LAT = 29.7604
 const IAN_LNG = -95.3698
 
-const QUOTE_TEXT = `"The road to wisdom? Well, it's plain and simple to express:\nerr\nand err\nand err again\nbut less\nand less\nand less."`
-const FIRST_LINE_END = QUOTE_TEXT.indexOf('\n')
+const QUOTE_LEAD = `"The road to wisdom? Well, it's plain and simple to express:`
+const QUOTE_LINES = ['err', 'and err', 'and err again', 'but less', 'and less', 'and less."']
 
-function quoteDelay(i) {
-    if (i < FIRST_LINE_END) return 12
-    if (QUOTE_TEXT[i] === '\n') return 160
-    return 25
-}
-
-function useTypewriter(text, getDelay, startDelay = 0) {
-    const [displayed, setDisplayed] = useState('')
-    const [done, setDone] = useState(false)
-    useEffect(() => {
-        let cancelled = false
-        let tid
-        const type = (i) => {
-            setDisplayed(text.slice(0, i))
-            if (i >= text.length) { setDone(true); return }
-            tid = setTimeout(() => { if (!cancelled) type(i + 1) }, getDelay(i))
-        }
-        const outer = setTimeout(() => type(0), startDelay)
-        return () => { cancelled = true; clearTimeout(outer); clearTimeout(tid) }
-    }, [])
-    return { displayed, done }
-}
+// The poem is a damped oscillation: err, err, err again, but less and less.
+// Plot it as one, and pin each line of the poem to a peak of the curve.
+const VB_W = 1000
+const VB_H = 200
+const MID = VB_H / 2
+const AMP = 82
+const DECAY = 2.2
+const wave = t => Math.exp(-DECAY * t) * Math.sin(2 * Math.PI * 3 * t)
+const SAMPLES = Array.from({ length: 241 }, (_, i) => {
+    const t = i / 240
+    return { t, y: MID - AMP * wave(t) }
+})
+const WAVE_PATH = SAMPLES.map((p, i) => `${i ? 'L' : 'M'}${(p.t * VB_W).toFixed(1)} ${p.y.toFixed(1)}`).join(' ')
+const PEAKS = SAMPLES.slice(1, -1)
+    .filter((p, i) => (p.y - SAMPLES[i].y) * (SAMPLES[i + 2].y - p.y) < 0)
+    .map((p, i) => ({ ...p, text: QUOTE_LINES[i], above: p.y < MID }))
+const END_Y = SAMPLES[SAMPLES.length - 1].y
 
 function haversineDistance(lat1, lng1, lat2, lng2) {
     const R = 3958.8
@@ -50,21 +45,10 @@ function formatTime() {
 
 function About() {
     const [locationOpen, setLocationOpen] = useState(false)
-    const [obuOpen, setObuOpen] = useState(false)
     const [localTime, setLocalTime] = useState(formatTime)
     const [distance, setDistance] = useState(null)
     const [locating, setLocating] = useState(false)
-    const [bioVisible, setBioVisible] = useState(false)
     const locationRef = useRef(null)
-    const obuRef = useRef(null)
-
-    const { displayed: quoteText, done: quoteDone } = useTypewriter(QUOTE_TEXT, quoteDelay, 800)
-
-    useEffect(() => {
-        if (!quoteDone) return
-        const t = setTimeout(() => setBioVisible(true), 350)
-        return () => clearTimeout(t)
-    }, [quoteDone])
 
     useEffect(() => {
         const id = setInterval(() => setLocalTime(formatTime()), 1000)
@@ -74,7 +58,6 @@ function About() {
     useEffect(() => {
         const handler = e => {
             if (!locationRef.current?.contains(e.target)) setLocationOpen(false)
-            if (!obuRef.current?.contains(e.target)) setObuOpen(false)
         }
         document.addEventListener('mousedown', handler)
         return () => document.removeEventListener('mousedown', handler)
@@ -99,44 +82,7 @@ function About() {
             <div className="hero-meta">
                 <span className="hero-tag">CS & Mathematics</span>
 
-                <span className="obu-widget hero-tag hero-tag-btn" ref={obuRef}>
-                    <span
-                        className="obu-trigger"
-                        onClick={() => setObuOpen(o => !o)}
-                        role="button"
-                        aria-expanded={obuOpen}
-                    >OBU '26</span>
-                    {obuOpen && (
-                        <div className="obu-popup">
-                            <div className="location-popup-header">
-                                <span className="location-popup-city">Ouachita Baptist University</span>
-                            </div>
-                            <div className="location-popup-row">
-                                <span>Location</span>
-                                <span>Arkadelphia, AR</span>
-                            </div>
-                            <div className="location-popup-row">
-                                <span>Founded</span>
-                                <span>1886</span>
-                            </div>
-                            <div className="location-popup-row">
-                                <span>Enrollment</span>
-                                <span>~1,500 students</span>
-                            </div>
-                            <div className="location-popup-row">
-                                <span>Conference</span>
-                                <span>GAC · NCAA DII</span>
-                            </div>
-                            <div className="location-popup-divider" />
-                            <a
-                                href="https://www.obu.edu"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="location-btn"
-                            >Visit obu.edu →</a>
-                        </div>
-                    )}
-                </span>
+                <span className="hero-tag">OBU '26</span>
 
                 <span className="location-widget hero-tag hero-tag-btn" ref={locationRef}>
                     <span
@@ -189,44 +135,58 @@ function About() {
                 </span>
             </div>
 
-            <div className="hero-content">
-                <div className="hero-text">
-                    <h1>Hi, I'm Ian Redman</h1>
-                    <div className="about-quote-wrapper">
-                        <blockquote className="about-quote about-quote-spacer" aria-hidden="true">
-                            {QUOTE_TEXT}
-                            <cite className="about-quote-attr">— Piet Hein</cite>
-                        </blockquote>
-                        <blockquote className="about-quote about-quote-overlay">
-                            {quoteText}
-                            {!quoteDone && <span className="type-cursor">|</span>}
-                            {quoteDone && <cite className="about-quote-attr cite-fade">— Piet Hein</cite>}
-                        </blockquote>
-                    </div>
-                    <p className={`hero-bio${bioVisible ? ' hero-bio-visible' : ''}`}>
-                        As a new grad and retired swimmer (and deplorable chess player), this is my personal mantra.
-                    </p>
-                    <div className={`hero-cta${bioVisible ? ' hero-bio-visible' : ''}`}>
-                        <a
-                            href="#projects"
-                            className="hero-cta-btn hero-cta-btn--primary"
-                            onClick={(e) => { e.preventDefault(); document.getElementById('projects').scrollIntoView({ behavior: 'smooth' }) }}
-                        >
-                            See my work
-                        </a>
-                        <a
-                            href="#contact"
-                            className="hero-cta-btn"
-                            onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) }}
-                        >
-                            Get in touch
-                        </a>
-                    </div>
-                </div>
+            <div className="hero-head">
+                <h1 className="hero-name">Ian Redman</h1>
                 <div className="hero-photo-frame">
                     <img src={photo} alt="Ian Redman" className="hero-photo" />
                 </div>
             </div>
+
+            <div className="hero-sub">
+                <p className="hero-lead">
+                    Full Stack Developer &amp; Data Analyst. I build web apps and turn messy data into clear answers.
+                </p>
+                <div className="hero-cta">
+                    <a
+                        href="#projects"
+                        className="hero-cta-btn hero-cta-btn--primary"
+                        onClick={(e) => { e.preventDefault(); document.getElementById('projects').scrollIntoView({ behavior: 'smooth' }) }}
+                    >
+                        See my work <span aria-hidden="true">→</span>
+                    </a>
+                    <a
+                        href="#contact"
+                        className="hero-cta-btn"
+                        onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) }}
+                    >
+                        Get in touch
+                    </a>
+                </div>
+            </div>
+
+            <figure className="hero-mantra">
+                <blockquote>
+                    <p className="mantra-lead">{QUOTE_LEAD}</p>
+                    <div className="mantra-plot">
+                        <svg viewBox={`0 0 ${VB_W} ${VB_H}`} preserveAspectRatio="none" aria-hidden="true">
+                            <line className="mantra-axis" x1="0" y1={MID} x2={VB_W} y2={MID} />
+                            <path className="mantra-line" d={WAVE_PATH} pathLength="1" />
+                        </svg>
+                        {PEAKS.map(({ t, y, text, above }) => (
+                            <span
+                                key={text}
+                                className={`mantra-label ${above ? 'mantra-label--above' : 'mantra-label--below'}`}
+                                style={{ left: `${t * 100}%`, top: `${(y / VB_H) * 100}%`, '--t': t }}
+                            >{text}</span>
+                        ))}
+                        <span className="mantra-end" style={{ top: `${(END_Y / VB_H) * 100}%` }} aria-hidden="true" />
+                    </div>
+                </blockquote>
+                <figcaption className="mantra-caption">
+                    <span>As a new grad and retired swimmer (and deplorable chess player), this is my personal mantra.</span>
+                    <cite>— Piet Hein</cite>
+                </figcaption>
+            </figure>
 
         </section>
     )

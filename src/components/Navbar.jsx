@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import GlassSurface from './GlassSurface'
 
 const LINKEDIN_HREF = 'https://www.linkedin.com/in/ianredmann/'
 const GITHUB_HREF = 'https://github.com/ianredmann'
@@ -18,9 +17,9 @@ const sections = [
     { id: 'home', label: 'Home' },
     { id: 'education', label: 'Education' },
     { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Skills' },
     { id: 'experience', label: 'Experience' },
     { id: 'athletics', label: 'Athletics' },
-    { id: 'skills', label: 'Skills' },
     { id: 'contact', label: 'Contact' },
 ]
 
@@ -294,16 +293,6 @@ function Navbar() {
 
     return (
         <header className={`topnav${inAppBrowser ? ' in-app-browser' : ''}`}>
-            <GlassSurface
-                width="100%"
-                height="100%"
-                borderRadius={0}
-                borderWidth={0.04}
-                backgroundOpacity={0.3}
-                distortionScale={-100}
-                blur={14}
-                saturation={1.3}
-            >
             <div className="topnav-progress">
                 <div className="topnav-progress-fill" ref={progressRef} />
             </div>
@@ -385,7 +374,6 @@ function Navbar() {
                     </button>
                 </div>
             </div>
-            </GlassSurface>
 
             {menuOpen && createPortal(
                 <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />,
