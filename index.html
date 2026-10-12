@@ -27,11 +27,15 @@
     <style>html { background-color: #2a2825; }</style>
     <script>
       (function () {
-        var light = localStorage.getItem('theme') === 'light';
-        document.documentElement.style.colorScheme = light ? 'light' : 'dark';
-        document.documentElement.style.backgroundColor = light ? '#f6f4ef' : '#2a2825';
+        // Follow the visitor's OS preference until they pick a theme with the toggle.
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (e) {}
+        var dark = stored ? stored !== 'light' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        window.__initialDark = dark;
+        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        document.documentElement.style.backgroundColor = dark ? '#2a2825' : '#f6f4ef';
         var m = document.querySelector('meta[name="theme-color"]');
-        if (m) m.setAttribute('content', light ? '#ede9e1' : '#1e1c1a');
+        if (m) m.setAttribute('content', dark ? '#1e1c1a' : '#ede9e1');
       })();
     </script>
   </head>
@@ -39,7 +43,7 @@
     <!-- Runs synchronously before React's first render so CSS vars resolve
          correctly and the glass navbar backdrop shows the right color. -->
     <script>
-      if (localStorage.getItem('theme') !== 'light') {
+      if (window.__initialDark) {
         document.body.classList.add('dark-mode');
       }
     </script>

@@ -55,7 +55,7 @@ function IrLogo() {
 
 function Navbar() {
     const [activeSection, setActiveSection] = useState('home')
-    const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') !== 'light')
+    const [darkMode, setDarkMode] = useState(() => window.__initialDark ?? true)
     const [menuOpen, setMenuOpen] = useState(false)
     const progressRef = useRef(null)
     const pendingScrollRef = useRef(null)
@@ -224,8 +224,25 @@ function Navbar() {
         document.documentElement.style.backgroundColor = isDark ? '#2a2825' : '#f6f4ef'
         const meta = document.querySelector('meta[name="theme-color"]')
         if (meta) meta.setAttribute('content', isDark ? '#1e1c1a' : '#ede9e1')
-        localStorage.setItem('theme', isDark ? 'dark' : 'light')
     }, [darkMode])
+
+    // Track the OS setting live, but only until the visitor picks a theme themselves.
+    useEffect(() => {
+        const mq = window.matchMedia('(prefers-color-scheme: dark)')
+        const onChange = (e) => {
+            let stored = null
+            try { stored = localStorage.getItem('theme') } catch { /* storage unavailable */ }
+            if (!stored) setDarkMode(e.matches)
+        }
+        mq.addEventListener('change', onChange)
+        return () => mq.removeEventListener('change', onChange)
+    }, [])
+
+    const toggleTheme = () => {
+        const next = !darkMode
+        setDarkMode(next)
+        try { localStorage.setItem('theme', next ? 'dark' : 'light') } catch { /* storage unavailable */ }
+    }
 
     useEffect(() => {
         if (!menuOpen) {
@@ -339,7 +356,7 @@ function Navbar() {
                         </a>
                         <button
                             className="topnav-icon-btn"
-                            onClick={() => setDarkMode(d => !d)}
+                            onClick={toggleTheme}
                             title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                         >
                             <ThemeIcon darkMode={darkMode} size={16} />
@@ -350,7 +367,7 @@ function Navbar() {
                 <div className="mobile-left-group">
                     <button
                         className="mobile-theme-btn"
-                        onClick={() => setDarkMode(d => !d)}
+                        onClick={toggleTheme}
                         aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                     >
                         <ThemeIcon darkMode={darkMode} />
