@@ -32,11 +32,11 @@ const projects = [
         category: 'Full-Stack',
         title: 'Registration Reservation App',
         date: 'December 2025',
-        stat: { num: 4, duration: 800, label: 'role modules refactored from a monolith' },
+        stat: { num: 4, duration: 800, label: 'modules extracted from a monolith' },
         github: 'https://github.com/ianredmann/registration-reservation-system',
         tags: ['JavaScript', 'HTML5', 'CSS3', 'SQLite', 'Node.js'],
         bullets: [
-            'Inherited and refactored a monolithic codebase from a prior capstone group, decomposing a single-file route handler into three purpose-built modules (admin, faculty, student) to improve maintainability and separation of concerns.',
+            'Inherited and refactored a monolithic codebase from a prior capstone group, decomposing a single-file route handler into three role-specific route modules (admin, faculty, student) and moving all database functions into a separate data-access module, improving maintainability and separation of concerns.',
             'Designed and implemented the admin dashboard from scratch, which was the only role not completed by the prior team, including its data views, workflows, and all associated UI.',
             'Implemented a unique link access system using generated URL tokens to authenticate and route users to their role specific views, eliminating the need for a traditional login flow.',
             'Redesigned the UI from zero. The inherited project had no CSS, and a complete visual layer across all three user-facing screens was implemented.',
