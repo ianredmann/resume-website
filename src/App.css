@@ -410,7 +410,7 @@ body.dark-mode .hero-photo-frame {
 
 
 .hero-cta-btn:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-clay-soft);
   background-color: var(--color-sidebar);
   text-decoration: none;
   color: var(--color-text);
@@ -473,7 +473,7 @@ body.dark-mode .hero-photo-frame {
 }
 
 .contact-link:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-clay-soft);
   background-color: var(--color-sidebar);
   text-decoration: none;
   color: var(--color-text);
@@ -794,7 +794,7 @@ body.dark-mode .hero-photo-frame {
 }
 
 .exp-card:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-clay-soft);
 }
 
 .exp-header {
@@ -960,7 +960,7 @@ body.dark-mode .hero-photo-frame {
 }
 
 .project-card:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-clay-soft);
 }
 
 .project-meta {
@@ -1169,7 +1169,7 @@ body.dark-mode .hero-photo-frame {
 }
 
 .bento-champ:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-clay-soft);
   text-decoration: none;
 }
 
@@ -1299,6 +1299,10 @@ body.dark-mode .topnav.in-app-browser::before {
   z-index: 0;
 }
 
+.nav-pill.nav-pill--rest,
+.drawer-pill.drawer-pill--rest {
+  background-color: color-mix(in srgb, var(--color-clay) 16%, transparent);
+}
 
 .topnav-right nav ul {
   display: flex;

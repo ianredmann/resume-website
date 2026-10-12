@@ -63,6 +63,8 @@ function Navbar() {
     const hoveringRef = useRef(false)
     const menuOpenRef = useRef(false)
     const [pill, setPill] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 })
+    const [hoverId, setHoverId] = useState(null)
+    const [drawerHoverId, setDrawerHoverId] = useState(null)
     const [inAppBrowser] = useState(isInAppBrowser)
     const drawerNavRef = useRef(null)
     const drawerLiRefs = useRef({})
@@ -96,11 +98,13 @@ function Navbar() {
 
     const onNavEnter = (id) => {
         hoveringRef.current = true
+        setHoverId(id)
         movePillTo(id)
     }
 
     const onNavLeave = () => {
         hoveringRef.current = false
+        setHoverId(null)
         movePillTo(activeSection)
     }
 
@@ -115,11 +119,13 @@ function Navbar() {
 
     const onDrawerEnter = (id) => {
         drawerHoveringRef.current = true
+        setDrawerHoverId(id)
         moveDrawerPillTo(id)
     }
 
     const onDrawerLeave = () => {
         drawerHoveringRef.current = false
+        setDrawerHoverId(null)
         moveDrawerPillTo(activeSection)
     }
 
@@ -305,7 +311,7 @@ function Navbar() {
                 <div className="topnav-right">
                     <nav ref={navRef} onMouseLeave={onNavLeave}>
                         <div
-                            className="nav-pill"
+                            className={`nav-pill${!hoverId || hoverId === activeSection ? ' nav-pill--rest' : ''}`}
                             style={{
                                 left: pill.left,
                                 top: pill.top,
@@ -382,7 +388,7 @@ function Navbar() {
 
             <nav className={`topnav-drawer${menuOpen ? ' open' : ''}`} ref={drawerNavRef}>
                 <div
-                    className="drawer-pill"
+                    className={`drawer-pill${!drawerHoverId || drawerHoverId === activeSection ? ' drawer-pill--rest' : ''}`}
                     style={{ top: drawerPill.top, height: drawerPill.height, opacity: drawerPill.opacity }}
                 />
                 <ul onMouseLeave={onDrawerLeave}>

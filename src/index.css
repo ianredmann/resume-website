@@ -13,6 +13,7 @@
   --color-card-bg: #ffffff;
   --color-clay: #ad4d2a;
   --color-on-clay: #ffffff;
+  --color-clay-soft: color-mix(in srgb, #ad4d2a 70%, #ddd8ce);
   --font-serif: 'Newsreader', Georgia, serif;
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -69,6 +70,7 @@ body.dark-mode {
   --color-card-bg: #323028;
   --color-clay: #e08a6c;
   --color-on-clay: #1e1c1a;
+  --color-clay-soft: color-mix(in srgb, #e08a6c 70%, #3a3835);
 }
 
 html, body {
